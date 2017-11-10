@@ -1,0 +1,12 @@
+body{
+
+	padding-top:60px;
+}
+
+.signup-home{
+
+	background-image: url("images/shop-home.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+}

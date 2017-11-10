@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" ng-app ="cart">
+<head>
+	 
+	 <title>Shopping-Cart</title>
+	 <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet"> 
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+                  
+                      <!-- FONT AWESOME -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	
+    				<!-- CUSTOM stylesheet -->
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+  <!-- <link rel="stylesheet" type="text/css" href="css/toTop.css"> -->
+
+</head>
+<body ng-controller = "LoginController as loginCtrl">
+	
+   <nav class="navbar navbar-toggleable-sm navbar-inverse bg-inverse fixed-top">
+            
+     <div class="container">
+       <div class="navbar-header">
+          <button type="button" class="navbar-toggler navbar-toggler-right collapsed" data-toggle="collapse" data-target="#navbar">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <a class="navbar-brand">E-Cart</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar">
+          <ul class="nav navbar-nav ml-auto">
+            <li><a ng-href="#/">Home</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav> 
+
+     <div class="container-fluid" ng-view>
+     </div>
+    <footer style="padding: 5px;background-color: #222222; color: ghostwhite; border-top:5px solid gray;margin-top: 30px;">
+            
+      <h3 class="text-center">&copy;Ecommerce</h3> 
+    </footer>
+
+
+		 <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+  			           <!-- Angular FILES -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-animate.min.js"></script>
+	
+    <script type="text/javascript" src="angular/app.js"></script>
+    <!-- <script type="text/javascript" src="angular/directives/customdirectives.js"></script> -->
+
+        
+	  <script type="text/javascript" src="angular/services/service.js"></script>
+						<!-- Angular controllers -->
+     
+  	<script type="text/javascript" src="angular/controllers/login-controller.js"></script>
+    <script type="text/javascript" src="angular/controllers/signup-controller.js"></script>
+     <script type="text/javascript" src="angular/controllers/dash-controller.js"></script>
+    <!-- <script type="text/javascript" src="angular/controllers/house-controller.js"></script> --> 
+    <script type="text/javascript" src="angular/routes.js"></script>
+       
+</body>
+</html>
