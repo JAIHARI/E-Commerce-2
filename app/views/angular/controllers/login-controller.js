@@ -1,11 +1,12 @@
 
 
-myApp.controller("LoginController",["$http",'$location','cartService',function($http,$location,cartService){
+myApp.controller("LoginController",["$http",'$location','cartService','$rootScope',function($http,$location,cartService,$rootScope){
 	
 	var main = this ; 
 
 	this.email ;
 	this.password;
+	$rootScope.showNav =false;  // hiding navbar for login-page
 
 	this.submitLogin = function(){
 
@@ -18,11 +19,23 @@ myApp.controller("LoginController",["$http",'$location','cartService',function($
 		cartService.loginApi(loginData)
 		.then(function successCallback(response){
 
-				console.log(response.data);
+			// console.log(response.data);
+
+			if(response.data.status == 200){
+
+				$location.path('/user/dashboard');
+
+			}
+
+			else{
+
+				alert(response.data.message);
+			}
+
 
 			}, function errorCallback(reason){
 				console.log(reason);
-				alert("Error in Post");
+				alert("Error in Login-Post");
 			})
 	}
 }])

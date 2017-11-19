@@ -1,22 +1,34 @@
 
 // defining a mongoose schema 
 // including the module
+
 var mongoose = require('mongoose');
 // declare schema object.
 var Schema = mongoose.Schema;
 
+
+var cartContent = new Schema({
+
+	productId : {type:mongoose.Schema.Types.ObjectId},
+	category  : {type:String,default:''},
+	price     : {type:Number,default:0,required:true},
+	amount	: {type:Number,default:0}
+
+})
+
+
 var userSchema = new Schema({
 
-	userName 			: {type:String,default:''},
-	firstName  			: {type:String,default:''},
-	lastName  			: {type:String,default:''},
-	email	  			: {type:String,default:''},
-	mobileNumber  		: {type:Number,default:''},
-	password			: {type:String,default:''}
+	firstName  			: {type:String,default:'',required:true},
+	lastName  			: {type:String,default:'',required:true},
+	email	  			: {type:String,default:'',required:true},
+	password			: {type:String,default:'',required:true},
 
-	
+	cart 				: [cartContent]
 
-});
+},{timestamps:true});
 
 
-mongoose.model('User',userSchema);
+
+// create the model for users and expose it to our app
+module.exports = mongoose.model('User', userSchema);

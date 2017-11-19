@@ -5,8 +5,12 @@ var express = require('express');
 
 // express router // used to define routes 
 var userModel = mongoose.model('User');
+var productModel = mongoose.model('Product');
 var userRouter  = express.Router();
-var responseGenerator = require("../libs/responseGenerator");
+var responseGenerator = require("./../../libs/responseGenerator");
+
+var crypto = require("./../../libs/crypto");
+var key = "Crypto-Key" ;
 var auth = require("./../../middlewares/authorization");
 
 
@@ -29,43 +33,56 @@ module.exports.controllerFunction = function(app) {
     
     });
 
-    userRouter.get("/login",function(req,res){
-
-       // res.render("login");
-       console.log("notworking");
-    
-    });
-
-     userRouter.get('/dashboard',auth.checkLogin,function(req,res){
+    userRouter.get('/logout',function(req,res){
+      
+      req.session.destroy(function(err) {
         
 
-    });//end get dashboard
+        res.redirect('/');
 
-      userRouter.get('/logout',function(req,res){
-      
-      // req.session.destroy(function(err) {
-      //   console.log("destroyed successfully");
+      });
 
-      //   res.redirect('/users/login');
 
-      // });
 
     });//end logout
 
+     userRouter.get('/dashboard',auth.checkLogin,auth.isProductAvailable,function(req,res){
+
+        // GET RECENTLY ADDED PRODUCT USING SORT AND LIMT
+
+        req.session.user.productStatus = true ;
+        
+        productModel.findOne({}).sort({'createdAt':-1}).limit(1).exec(function(err,product){
+        if(err){
+            var myResponse = responseGenerator.generate(true,err,500,null);
+                res.send(myResponse);
+            }
+            else{
+                req.session.user.product = product ; 
+                var myResponse = responseGenerator.generate(false,"Retrieved successfully",200,req.session.user);
+                res.send(myResponse);
+            }
+        })
+
+
+    });//end get dashboard
+
+      
+
     userRouter.post('/signup',function(req,res){
 
-     if(req.body.firstname!=undefined && req.body.lastname!=undefined && req.body.password!=undefined && req.body.email!=undefined){
-
-                        console.log(req.body.firstname);
+     if(req.body.firstname!=undefined && req.body.lastname!=undefined && req.body.password!=undefined && req.body.email!=undefined){     
 
              var newUser = new userModel({
 
                 username    : req.body.firstname+' '+req.body.lastname,
                 firstName   : req.body.firstname,
                 lastName    : req.body.lastname,
-                email       : req.body.email,
-                password    : req.body.password
+                email       : req.body.email
             });
+
+             newUser.password = crypto.encrypt(key,req.body.password);
+             
 
 
             newUser.save(function(err,result){
@@ -78,10 +95,13 @@ module.exports.controllerFunction = function(app) {
 
                 else{
 
-                    console.log(req.session);
                     req.session.user = newUser;
+                    // req.session.user.loginStatus = false;
+                    delete req.session.user.password ;
+                    
+                    var myResponse = responseGenerator.generate(false,"Signed up successfully",200,newUser);
+                    res.send(myResponse);
 
-                     // res.redirect('/user/dashboard');
                 }
             });
         }
@@ -94,31 +114,38 @@ module.exports.controllerFunction = function(app) {
     });//end post signup
 
     userRouter.post('/login',function(req,res){
-        console.log("login ran");
+       
 
         if(req.body.email != undefined && req.body.password != undefined){
 
-            console.log("Check-Clear");
+            var newUser = new userModel({
 
-             userModel.findOne({"email":req.body.email,"password":req.body.password},function(err,result){
+                password    :  req.body.password
+            });
+
+            var verifyPassword = crypto.encrypt(key,req.body.password);
+
+             userModel.findOne({"email":req.body.email,"password":verifyPassword},function(err,foundUser){
                     if(err){
-                        console.log("ha ha ha");
+                           console.log("Check-Clear");
+
                         res.send(err);
                     }
-                    else if(result == null){ 
-                          console.log("error working");
-                         var myResponse = responseGenerator.generate(true,"No user data",500,null);
-                           res.render("error",{message:myResponse.message,
-                                Status_code:myResponse.status});
+                    else if(foundUser == null){ 
+                            console.log("error working");
+                            var myResponse = responseGenerator.generate(true,"User data not available",500,null);
+                            res.send(myResponse);
                     
                     }
 
-                    else{
+                    else{          
+                          req.session.user = foundUser;
+                          foundUser.loginStatus = true ;
+                           delete req.session.user.password ;
 
-                          
-                          req.session.user = result;
-                          console.log(req.session.user);
-                       res.redirect("/user/dashboard");
+                          var myResponse = responseGenerator.generate(false,"Success",200,foundUser);
+                          res.send(myResponse);
+                         
                     }
             });
               
@@ -126,8 +153,7 @@ module.exports.controllerFunction = function(app) {
 
         else{
             var myResponse = responseGenerator.generate(true,"Some paramater is missing",500,null);
-            res.render("error",{message:myResponse.message,
-                                Status_code:myResponse.status});
+            res.send(myResponse);
         }
 
     });//end post login

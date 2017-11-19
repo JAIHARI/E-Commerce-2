@@ -10,3 +10,19 @@ body{
 	background-size: cover;
 	background-position: center;
 }
+
+.dash-card{
+	background: linear-gradient(to right,#ece8e8,#e4e4e2);
+}
+
+.edit-card{
+	padding: 1.5rem;
+}
+
+.all-products{
+	margin-top: 2rem;
+	border: 1px solid black;
+	border-radius: 5%; 
+	padding: 2rem;
+	background: linear-gradient(to bottom,#e6e2e2,#dcd6d6);
+}

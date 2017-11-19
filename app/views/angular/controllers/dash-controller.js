@@ -1,29 +1,50 @@
 
 
-myApp.controller("DashController",["$http",'$location','cartService',function($http,$location,cartService){
+myApp.controller("DashController",["$http",'$location','cartService','$rootScope',function($http,$location,cartService,$rootScope){
 	
 	var main = this ; 
+	
+	this.userProducts = [];
+	this.productAvail;
+	this.recentProduct;
+	this.userName;
 
-	this.email ;
-	this.password;
+	$rootScope.showNav = true; //Showing navbar for Dashboard page
 
-	// this.submitLogin = function(){
+	this.showForm = false;
 
-	// 	var loginData = {
-
-	// 		email: main.email,
-	// 		password:main.password
-	// 	}
-
+	
 		cartService.dashboardApi()
 		.then(function successCallback(response){
+			console.log(response);
 
-				console.log(response);
-				$location.path('/user/dashboard');
+			if(response.data.userLog == false){
+				alert(response.data.message)
+				$location.path('/');
+			}
+
+			else{
+
+				 main.userName = response.data.data.firstName;
+
+				if(response.data.data.productStatus == false){
+					console.log("No products");
+					main.productAvail = false;
+				}
+				else {
+					main.productAvail = true;
+					console.log("products available");
+
+				  main.recentProduct = response.data.data.product;
+				  console.log(main.recentProduct);
+				}
+			}
 
 			}, function errorCallback(reason){
 				console.log(reason);
 				alert("Error in Post");
 			})
+
+		
 	}
 ])

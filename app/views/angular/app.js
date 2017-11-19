@@ -1,4 +1,4 @@
 
-// Module declarration here
+// Module declaration here
 
 var myApp = angular.module("cart",["ngRoute","ngAnimate"]);

@@ -3,21 +3,20 @@ myApp.controller("SignupController",["$http",'$location','cartService',function(
 	var main = this ; 
 
 	this.firstname
-	this.mobnumber;
+	
 	this.lastname;
 	this.email ;
 	this.password;
 
 	this.submitSignup = function(){
-		console.log("Submit signup");
+		// console.log("Submit signup");
 
 		var signupData = {
 
 			firstname : main.firstname,
 			lastname: main.lastname,
 			email: main.email,
-			password: main.password,
-			mobnumber: main.mobile
+			password: main.password
 		};
 
 		cartService.signupApi(signupData)
@@ -25,11 +24,13 @@ myApp.controller("SignupController",["$http",'$location','cartService',function(
 
 			console.log(response);
 
-				console.log(response.data);
-
+			if(response.data.status == 200){
 				$location.path('/user/dashboard'); 
+			}
 
-			}, function errorCallback(reason){
+			
+
+		}, function errorCallback(reason){
 				console.log(reason);
 				console.log("Error in Post");
 			})
