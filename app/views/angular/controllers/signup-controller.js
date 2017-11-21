@@ -22,7 +22,7 @@ myApp.controller("SignupController",["$http",'$location','cartService',function(
 		cartService.signupApi(signupData)
 		.then(function successCallback(response){
 
-			console.log(response);
+			// console.log(response);
 
 			if(response.data.status == 200){
 				$location.path('/user/dashboard'); 

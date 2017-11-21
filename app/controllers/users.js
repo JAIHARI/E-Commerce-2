@@ -14,16 +14,6 @@ var key = "Crypto-Key" ;
 var auth = require("./../../middlewares/authorization");
 
 
-
-/*
-var response = {
-    error: false,
-    message: null,
-    status: 200,
-    data: null
-};
-*/
-
 module.exports.controllerFunction = function(app) {
 
 
@@ -52,13 +42,14 @@ module.exports.controllerFunction = function(app) {
 
         req.session.user.productStatus = true ;
         
-        productModel.findOne({}).sort({'createdAt':-1}).limit(1).exec(function(err,product){
+        productModel.findOne({}).sort({'createdAt':-1}).limit(1).populate({path:'owner',select:'firstName -_id'}).exec(function(err,product){
         if(err){
             var myResponse = responseGenerator.generate(true,err,500,null);
                 res.send(myResponse);
             }
             else{
                 req.session.user.product = product ; 
+                console.log("Dashboard"+product);
                 var myResponse = responseGenerator.generate(false,"Retrieved successfully",200,req.session.user);
                 res.send(myResponse);
             }

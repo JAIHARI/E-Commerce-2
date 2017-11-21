@@ -20,7 +20,7 @@ myApp.controller("AllProdController",["$http",'$location','cartService','$rootSc
 
 			 	//displaying latest products using array's reverse method
 				main.allProducts = response.data.data.reverse();
-				console.log(main.allProducts);
+				// console.log(main.allProducts);
 				// cartService.recentProduct = main.allProducts[main.allProducts.length-1];
 			}
 

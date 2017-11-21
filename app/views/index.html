@@ -31,7 +31,7 @@
         <div id="navbar" ng-if="showNav">  
           <ul class="navbar-nav ml-auto">
             <li class="nav-item"><a class="nav-link" ng-href="#/user/dashboard">Home</a></li>
-            <li class="nav-item"><a class="nav-link" ng-href="#/">Cart</a></li>
+            <li class="nav-item"><a class="nav-link" ng-href="#/cart/all">Cart</a></li>
             <li class="nav-item"><a class="nav-link" ng-href="/user/logout">Logout</a></li>
           </ul>
         </div>
@@ -40,7 +40,7 @@
 
      <div class="container-fluid" ng-view>
      </div>
-    <footer style="padding: 5px;background-color: #222222; color: ghostwhite; border-top:5px solid gray;margin-top: 30px;">
+    <footer class="footer-style">
             
       <h3 class="text-center">&copy;Ecommerce</h3> 
     </footer>
@@ -66,10 +66,11 @@
      
   	<script type="text/javascript" src="angular/controllers/login-controller.js"></script>
     <script type="text/javascript" src="angular/controllers/signup-controller.js"></script>
-     <script type="text/javascript" src="angular/controllers/dash-controller.js"></script>
-     <script type="text/javascript" src="angular/controllers/createProduct-controller.js"></script>
+    <script type="text/javascript" src="angular/controllers/dash-controller.js"></script>
+    <script type="text/javascript" src="angular/controllers/createProduct-controller.js"></script>
     <script type="text/javascript" src="angular/controllers/allProducts-controller.js"></script>
-        <script type="text/javascript" src="angular/controllers/edit-controller.js"></script> 
+    <script type="text/javascript" src="angular/controllers/edit-controller.js"></script>
+    <script type="text/javascript" src="angular/controllers/cart-controller.js"></script> 
  
     <script type="text/javascript" src="angular/routes.js"></script>
        

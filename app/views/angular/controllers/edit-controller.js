@@ -39,7 +39,7 @@ myApp.controller("EditDeleteController",["$http",'$location','cartService','$roo
 
 			cartService.deleteProdApi(main.productId)
 			.then(function successCallback(response){
-				console.log(response);
+				 console.log(response);
 
 				if(response.data.userLog == false){
 					alert(response.data.message)
@@ -47,8 +47,15 @@ myApp.controller("EditDeleteController",["$http",'$location','cartService','$roo
 				}
 
 				else{
-					
-					$location.path('/product/all');
+
+					if(response.data.data === true){
+						console.log("delete true");
+						alert(response.data.message);
+						$location.path('/product/all');
+					}
+					else{
+						alert(response.data.message);
+					}
 				}
 
 			}, function errorCallback(reason){
@@ -63,11 +70,12 @@ myApp.controller("EditDeleteController",["$http",'$location','cartService','$roo
 
 	// function to show and hide product and form
 	this.showHide = function(){
-		main.showForm = true;
-		main.showProduct = false;
+
+			main.showForm = true;
+			main.showProduct = false;
 	}
 	
-		this.editProduct = function(){
+	this.editProduct = function(){
 
 			var toEditData = {
 
@@ -91,7 +99,7 @@ myApp.controller("EditDeleteController",["$http",'$location','cartService','$roo
 				else{
 
 					main.product = response.data.data;
-					console.log(main.product)
+					
 					main.showForm = false;
 					main.showProduct = true;
 					$location.path('/product/all');
@@ -102,6 +110,6 @@ myApp.controller("EditDeleteController",["$http",'$location','cartService','$roo
 					console.log(reason);
 					alert("Error in Post");
 				})
-		};
-	}
-])
+	};
+	
+}])

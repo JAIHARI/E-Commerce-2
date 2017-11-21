@@ -29,7 +29,11 @@
 						    <li class="list-group-item">Category : {{ dashCtrl.recentProduct.category }}</li>
 						    <li class="list-group-item">Owner : {{ dashCtrl.recentProduct.owner.firstName }}</li>
 		  				</ul>
-					    <a href="#/product/{{dashCtrl.recentProduct._id }}" class="btn btn-primary" style="margin-top: 0.5rem;">know more</a>
+		  				<div style="display: flex;justify-content: space-between;margin-top: 0.6rem;">
+						    <a href="#/product/{{dashCtrl.recentProduct._id }}" class="btn btn-primary"> More
+						    </a>
+						    <span ng-click="dashCtrl.addToCart()"><i class="fa fa-heart fa-2x" data-toggle="tooltip" data-placement="bottom" title="Add to cart"></i></span>
+						</div>
 					  </div>
 					</div>
 				</div>
@@ -37,3 +41,9 @@
 		    
 		</div>
 	</div>
+
+	<script type="text/javascript">
+		$(function () {
+  			$('[data-toggle="tooltip"]').tooltip()
+		})
+	</script>

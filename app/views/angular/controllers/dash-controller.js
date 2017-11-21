@@ -16,7 +16,7 @@ myApp.controller("DashController",["$http",'$location','cartService','$rootScope
 	
 		cartService.dashboardApi()
 		.then(function successCallback(response){
-			console.log(response);
+			// console.log(response);
 
 			if(response.data.userLog == false){
 				alert(response.data.message)
@@ -26,6 +26,7 @@ myApp.controller("DashController",["$http",'$location','cartService','$rootScope
 			else{
 
 				 main.userName = response.data.data.firstName;
+				 cartService.currentUsername = main.userName;
 
 				if(response.data.data.productStatus == false){
 					console.log("No products");
@@ -36,7 +37,7 @@ myApp.controller("DashController",["$http",'$location','cartService','$rootScope
 					console.log("products available");
 
 				  main.recentProduct = response.data.data.product;
-				  console.log(main.recentProduct);
+				  // console.log(main.recentProduct);
 				}
 			}
 
@@ -45,6 +46,24 @@ myApp.controller("DashController",["$http",'$location','cartService','$rootScope
 				alert("Error in Post");
 			})
 
+		this.addToCart = function(){
+			
+			cartService.postCartApi(main.recentProduct._id)
+			.then(function successCallback(response){
+				 console.log(response);
+				 if(response.data.data==true){
+				 	alert(response.data.message);
+				 }
+				 else{
+				 	alert("Nothing happened");
+				 }
+
+			
+			}, function errorCallback(reason){
+				console.log(reason);
+				alert("Error in Post");
+			})
+	}
 		
 	}
 ])

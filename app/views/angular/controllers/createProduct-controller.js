@@ -23,7 +23,7 @@ myApp.controller("CreateProdController",["$http",'$location','cartService',funct
 		cartService.postProdApi(createdData)
 		.then(function successCallback(response){
 
-			console.log(response.data);
+			// console.log(response.data);
 
 			if(response.data.status == 200){
 

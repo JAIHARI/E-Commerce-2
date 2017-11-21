@@ -10,9 +10,10 @@ var Schema = mongoose.Schema;
 var cartContent = new Schema({
 
 	productId : {type:mongoose.Schema.Types.ObjectId},
+	productName:{type:String,default:'',required:true},
 	category  : {type:String,default:''},
 	price     : {type:Number,default:0,required:true},
-	amount	: {type:Number,default:0}
+	amount	: 	{type:Number,default:1,required:true}
 
 })
 

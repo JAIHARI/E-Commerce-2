@@ -42,3 +42,32 @@ module.exports.isProductAvailable = function(req,res,next){
   			}
   	});
 };
+
+// module.exports.isUserOwner = function(req,res,next){
+
+// 	productModel.findOne({"owner":req.session.user._id},{"owner":1,"_id":0}).populate('owner', 'firstName').exec(function(err,popProduct){
+// 	       if(err){
+// 	            var myResponse = responseGenerator.generate(true,err,500,null);
+// 				         res.send(myResponse);
+// 	         }
+// 	         else{
+	         		
+// 	            	if(popProduct.owner.firstName !== req.session.user.firstName){
+// 			             				// console.log(newProduct);
+// 			        	var myResponse = responseGenerator.generate(true,"Action restricted",200,null);
+// 				       res.send(myResponse);
+// 				    }
+// 				    else{
+
+// 				    	next();
+// 				    }
+
+// 			}
+// 	});
+
+// 			// else{
+
+// 			// 	next();
+//   	// 		}
+//   	// });
+// };

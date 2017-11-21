@@ -3,8 +3,6 @@ myApp.service("cartService",function($http){
 
 	var main = this ;
 
-	this.recentProduct;
-
 
 	this.dashboardApi = function(){
 		return $http.get("/user/dashboard");
@@ -23,7 +21,7 @@ myApp.service("cartService",function($http){
 
 
 	this.postProdApi = function(data){
-		console.log(data);
+		
 		return $http.post('/product/create',data);
 	}
 
@@ -44,6 +42,25 @@ myApp.service("cartService",function($http){
 	this.deleteProdApi = function(productId){
 		
 		return $http.post('/product/delete/'+productId+'');
+	}
+
+	this.getCartApi = function(){
+		
+		console.log("get all cart ran");
+		
+		return $http.get('/cart/all');
+	}
+
+	this.postCartApi = function(productId,data){
+		
+		console.log("I ran");
+		
+		return $http.post('/cart/add/'+''+productId+'',null);
+	}
+
+	this.deleteCartApi = function(productId){
+		
+		return $http.post('/cart/delete/'+''+productId+'',null);
 	}
 
 })

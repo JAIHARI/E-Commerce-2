@@ -32,7 +32,7 @@
                   controller  : "EditDeleteController",
                   controllerAs : "edDelCtrl"
             })
-            .when('/user/cart',{
+            .when('/cart/all',{
                   templateUrl : "templates/cart.html",
                   controller  : "cartController",
                   controllerAs : "cartCtrl"

@@ -10,11 +10,11 @@ var productSchema = new Schema({
 
 	owner				: {type:mongoose.Schema.Types.ObjectId,ref:"User"},
 	productName  		: {type:String,default:'',required:true},
-	category			: {type:String,default:0,required:true},
+	category			: {type:String,default:'',required:true},
 	price				: {type:Number,default:0,required:true},
 	color				: {type:String,default:'White',required:true},
 	additionalInfo		: {type:String,default:'',required:true},
-	availableIn	  		: {type:Number,default:5,required:true}
+	availableIn	  		: {type:Number,default:1,required:true}
 
 },{timestamps:true});
 
