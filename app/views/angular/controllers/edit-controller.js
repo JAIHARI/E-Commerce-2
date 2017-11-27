@@ -13,7 +13,7 @@ myApp.controller("EditDeleteController",["$http",'$location','cartService','$roo
 
 	cartService.getProdApi(this.productId)
 		.then(function successCallback(response){
-			console.log(response);
+			// console.log(response);
 
 			if(response.data.userLog == false){
 				alert(response.data.message)
@@ -23,7 +23,7 @@ myApp.controller("EditDeleteController",["$http",'$location','cartService','$roo
 			else{
 
 				main.product = response.data.data;
-				 console.log(main.product);
+				 // console.log(main.product);
 				
 			}
 
@@ -39,7 +39,7 @@ myApp.controller("EditDeleteController",["$http",'$location','cartService','$roo
 
 			cartService.deleteProdApi(main.productId)
 			.then(function successCallback(response){
-				 console.log(response);
+				 // console.log(response);
 
 				if(response.data.userLog == false){
 					alert(response.data.message)
@@ -99,7 +99,6 @@ myApp.controller("EditDeleteController",["$http",'$location','cartService','$roo
 				else{
 
 					main.product = response.data.data;
-					
 					main.showForm = false;
 					main.showProduct = true;
 					$location.path('/product/all');

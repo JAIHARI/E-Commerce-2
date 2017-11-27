@@ -23,7 +23,7 @@ myApp.controller("cartController",["$http",'$location','cartService','$rootScope
 			else{
 				
 				//IF NO PRODUCTS ARE IN CART
-				if(response.data.data == false){
+				if(response.data.data.inCart == false){
 					console.log("I worked");
 					main.showCartIcon == true;
 				}
@@ -37,7 +37,7 @@ myApp.controller("cartController",["$http",'$location','cartService','$rootScope
 			}
 
 
-			}, function errorCallback(reason){
+		}, function errorCallback(reason){
 				console.log(reason);
 				alert("Error in Login-Post");
 			})
@@ -48,13 +48,17 @@ myApp.controller("cartController",["$http",'$location','cartService','$rootScope
 
 			cartService.deleteCartApi(id)
 			.then(function successCallback(response){
-
 				console.log(response);
+
+
+				if(response.data.status ==200 && response.data.data.productDel == true){
+					alert(response.data.message);
+					$location.path('cart/all');
+				}
 
 			}, function errorCallback(reason){
 				console.log(reason);
 				alert("Error in Login-Post");
 			})
 		}
-	// }
 }])

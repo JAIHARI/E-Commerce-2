@@ -51,13 +51,12 @@ myApp.controller("DashController",["$http",'$location','cartService','$rootScope
 			cartService.postCartApi(main.recentProduct._id)
 			.then(function successCallback(response){
 				 console.log(response);
-				 if(response.data.data==true){
+				 if(response.data.data.present==true){
 				 	alert(response.data.message);
 				 }
 				 else{
-				 	alert("Nothing happened");
-				 }
-
+				 	alert(response.data.message);
+				 } 
 			
 			}, function errorCallback(reason){
 				console.log(reason);

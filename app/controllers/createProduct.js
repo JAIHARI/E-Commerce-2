@@ -70,33 +70,33 @@ module.exports.controllerFunction = function(app) {
 	            	});
 
 		    
-	            		newProduct.save(function(err,result){       		
+	            	newProduct.save(function(err,result){       		
 
-			            	if(err){
-			             		var myResponse = responseGenerator.generate(true,err,500,null);
-				                   res.send(myResponse);
-			             	}
+			           	if(err){
+			           		var myResponse = responseGenerator.generate(true,err,500,null);
+				                res.send(myResponse);
+		             	}
 
-			             	else{
+		             	else{
 			             		
-			             	//POPULATING FIRSTNAME OF USER  INSIDE OWNER FIELD AND RESULT DISPLAYS ONLY FIRSTNAME FIELD
-	            				productModel.findOne({"owner":user._id},{"owner":1,"_id":0}).populate('owner', 'firstName').exec(function(err,popProduct){
-	            					if(err){
-	             						var myResponse = responseGenerator.generate(true,err,500,null);
-				                   		res.send(myResponse);
-	            					}
-	            					else{
-	            						console.log("Save work");
-	            						newProduct.owner = popProduct.owner;
-			             				// console.log(newProduct);
-			             				var myResponse = responseGenerator.generate(false,"Product created successfull",200,newProduct);
-				                   		res.send(myResponse);
-				             		}
-				             	}); //Findone ends
+		             	//POPULATING FIRSTNAME OF USER  INSIDE OWNER FIELD AND RESULT DISPLAYS ONLY FIRSTNAME FIELD
+	           				productModel.findOne({"owner":user._id},{"owner":1,"_id":0}).populate('owner', 'firstName').exec(function(err,popProduct){
+	           					if(err){
+            						var myResponse = responseGenerator.generate(true,err,500,null);
+			                   		res.send(myResponse); 
+			                   	}
+	            				else{
+	            					console.log("Save work");
+	            					newProduct.owner = popProduct.owner;
+			           				// console.log(newProduct);
+			            			var myResponse = responseGenerator.generate(false,"Product created successfull",200,newProduct);
+				                   	res.send(myResponse);
+				             	}
+				             }); //Findone ends
 	            			
-	            			}	            			
+	            		}	            			
 	            			
-	            		});	//Save ends  	
+	            	});	//Save ends  	
 						
 				}
 
@@ -223,6 +223,7 @@ module.exports.controllerFunction = function(app) {
 						}
 
 						else{
+
 						 var myResponse = responseGenerator.generate(false,"PRODUCT DELETED SUCCESSFULLY",200,forInfo.authCheck);
 						 res.send(myResponse);
 						}
