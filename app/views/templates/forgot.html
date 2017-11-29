@@ -5,20 +5,21 @@
     </div>
 
 
- <div class="row">
+        <div class="row">
           <div class="col-sm-6 offset-sm-3">
             <div class="card" style="border: 1px solid red;">
               <div class="card-block">
                 <h3 class="card-title text-center">
                   <blockquote>To <s>err</s> <i>Forget</i> is human</q></blockquote>
                 </h3>
-                <form>
+                <form ng-submit="forgotCtrl.resetPass()">
                   <div class="form-group">
                     <label for="Email">Email address</label>
-                    <input type="email" name="inputEmail" ng-model="forgotCtrl.emailForReset" class="form-control" id="Email" aria-describedby="emailHelp" placeholder="Enter email" required>
+                    <input type="text" name="inputEmail" ng-model="forgotCtrl.emailForReset" class="form-control" id="Email" aria-describedby="emailHelp" placeholder="Enter email" required>
                   </div>
-                  <button class="btn btn-success" type="submit" ng-click="forgotCtrl.resetPass(forgotCtrl.emailForReset)">Submit
-                    <span><i class="fa fa-paper-plane-o"></i></span>
+                  <button class="btn btn-success" type="submit">Submit
+                    <span><i class="fa fa-paper-plane-o"></i>
+                    </span>
                   </button>
                 </form>
                 <div class="card-footer text-muted">

@@ -16,14 +16,14 @@ module.exports.controllerFunction = function(app) {
 
 	mailRouter.post('/forgotPass',function(req,res){
 
-		userModel.find({"email":req.body.email},function(err,user){
+		userModel.find({"email":req.body.email},{"password":0},function(err,user){
 			if(err){
 				var myResponse = responseGenerator.generate(true,err,500,null);
                 res.send(myResponse);
 			}
 			else{
-				console.log(user);
-				res.send(user);
+				var myResponse = responseGenerator.generate(false,"Email sent",200,);
+                res.send(myResponse);
 			}
 		})
 	})
