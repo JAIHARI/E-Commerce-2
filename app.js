@@ -23,19 +23,15 @@ app.use(session({
   cookie: { secure: false }  // make true incase of SSL certificate
 }));
 
-
-
 //built-in Node-module to get path.No installation required
 var path = require("path");
 
 // accessing public directory
 app.use(express.static(__dirname +'/app/views'));
 
-
 //Establishing database connection
 
 var dbPath = "mongodb://localhost/shopCart";
-
 
 db = mongoose.connect(dbPath);
 
@@ -68,9 +64,6 @@ fs.readdirSync('./app/controllers').forEach(function(file){
 	}
 
 });//end for each
-
-
-
 
 
 

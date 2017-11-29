@@ -1,8 +1,12 @@
 
 
-myApp.controller("DashController",["$http",'$location','cartService','$rootScope',function($http,$location,cartService,$rootScope){
+myApp.controller("DashController",["$http",'$location','cartService','$rootScope','$timeout',
+	function($http,$location,cartService,$rootScope,$timeout){
 	
 	var main = this ; 
+
+	this.alerts = false;
+	this.alertText ='';
 	
 	this.userProducts = [];
 	this.productAvail;
@@ -29,12 +33,12 @@ myApp.controller("DashController",["$http",'$location','cartService','$rootScope
 				 cartService.currentUsername = main.userName;
 
 				if(response.data.data.productStatus == false){
-					console.log("No products");
+					// console.log("No products");
 					main.productAvail = false;
 				}
 				else {
 					main.productAvail = true;
-					console.log("products available");
+					// console.log("products available");
 
 				  main.recentProduct = response.data.data.product;
 				  // console.log(main.recentProduct);
@@ -50,11 +54,26 @@ myApp.controller("DashController",["$http",'$location','cartService','$rootScope
 			
 			cartService.postCartApi(main.recentProduct._id)
 			.then(function successCallback(response){
-				 console.log(response);
-				 if(response.data.data.present==true){
-				 	alert(response.data.message);
-				 }
-				 else{
+
+				 // console.log(response);
+				 
+				if(response.data.data==true){
+				 	function alertAddCart(){
+
+		      			main.alerts = true;
+		      			main.alertText = response.data.message;
+		      			$timeout(function() {
+		         			main.alerts = false;
+		         			$location.path('/cart/all');
+		      			}, 1800);
+
+   					};
+
+   					alertAddCart();
+
+				}
+				
+				else{
 				 	alert(response.data.message);
 				 } 
 			

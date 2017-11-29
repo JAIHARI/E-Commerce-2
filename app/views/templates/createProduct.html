@@ -1,4 +1,10 @@
+   
+ <!--  ALERT MESAGE IF PRODUCT CREATED -->
+    <div class="alert alert-success" ng-if="createCtrl.alerts">
+    <h4><i>{{ createCtrl.alertText }}</i></h4>.
+    </div>
 
+   <!--  CREATE A PRODUCT FORM -->
     <form ng-submit = "createCtrl.submitCreate()">
       <div class="row">
           <div class="col-sm-3 offset-sm-2">

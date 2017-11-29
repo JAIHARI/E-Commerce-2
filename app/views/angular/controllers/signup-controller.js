@@ -24,8 +24,11 @@ myApp.controller("SignupController",["$http",'$location','cartService',function(
 
 			// console.log(response);
 
-			if(response.data.status == 200){
+			if(response.data.status == 200 && response.data.data.emailPresent !== true){
 				$location.path('/user/dashboard'); 
+			}
+			else{
+				alert(response.data.message);
 			}
 
 			

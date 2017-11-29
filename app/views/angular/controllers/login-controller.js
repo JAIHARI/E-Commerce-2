@@ -5,6 +5,7 @@ myApp.controller("LoginController",["$http",'$location','cartService','$rootScop
 	var main = this ; 
 
 	this.email ;
+	this.emailForReset;
 	this.password;
 	$rootScope.showNav =false;  // hiding navbar for login-page
 
@@ -33,9 +34,11 @@ myApp.controller("LoginController",["$http",'$location','cartService','$rootScop
 			}
 
 
-			}, function errorCallback(reason){
+			}, function  errorCallback(reason){
 				console.log(reason);
 				alert("Error in Login-Post");
 			})
 	}
+
+	
 }])

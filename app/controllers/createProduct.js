@@ -15,12 +15,6 @@ var async = require("async");
 
 module.exports.controllerFunction = function(app) {
 
-
-	// productRouter.get('/create',auth.checkLogin,function(req,res){
-
-	// 	res.redirect('/product/create');
-	// })
-
 	productRouter.get('/all',auth.checkLogin,function(req,res){
 		console.log("get all working");
 
@@ -30,10 +24,6 @@ module.exports.controllerFunction = function(app) {
                     res.send(myResponse);
 			}
 
-			// else if(product == undefined || product.productName == undefined){
-			// 	var myResponse = responseGenerator.generate(true,"No products found!",500,null);
-   //               res.send(myResponse);
-			// }
 			else{
 				console.log(product);
 
@@ -80,17 +70,18 @@ module.exports.controllerFunction = function(app) {
 		             	else{
 			             		
 		             	//POPULATING FIRSTNAME OF USER  INSIDE OWNER FIELD AND RESULT DISPLAYS ONLY FIRSTNAME FIELD
-	           				productModel.findOne({"owner":user._id},{"owner":1,"_id":0}).populate('owner', 'firstName').exec(function(err,popProduct){
-	           					if(err){
+	           			productModel.findOne({"owner":user._id},{"owner":1,"_id":0}).populate('owner', 'firstName').exec(function(err,popProduct){
+	           					
+	           				if(err){
             						var myResponse = responseGenerator.generate(true,err,500,null);
 			                   		res.send(myResponse); 
-			                   	}
-	            				else{
-	            					console.log("Save work");
-	            					newProduct.owner = popProduct.owner;
-			           				// console.log(newProduct);
-			            			var myResponse = responseGenerator.generate(false,"Product created successfull",200,newProduct);
-				                   	res.send(myResponse);
+			                 }
+	            			else{
+	            				console.log("Save work");
+	            				newProduct.owner = popProduct.owner;
+			           			// console.log(newProduct);
+			           			var myResponse = responseGenerator.generate(false,"Product created successfull",200,newProduct);
+				                 res.send(myResponse);
 				             	}
 				             }); //Findone ends
 	            			
@@ -134,6 +125,7 @@ module.exports.controllerFunction = function(app) {
 
 	});
 
+   //API TO DELTE A PARTICULAR PRODUCT
    productRouter.post('/delete/:id',auth.checkLogin,function(req,res){
 
    	var forInfo={};
@@ -171,9 +163,10 @@ module.exports.controllerFunction = function(app) {
 	};
 
 	var checkAuthorityAndDelete = function(arg1,arg2,callback){
-		console.log(arg1);
-		console.log(arg2);
+		// console.log(arg1);
+		// console.log(arg2);
 
+		// IF CURRENT PRODUCT'S OWNER IS CURRENT USER THEN DELETE
 		if(arg1.owner.firstName == arg2.firstName){
 			console.log("Checkauthority..you are allowed to delete");
 			productModel.remove({"_id":req.params.id},function(err,product){
@@ -184,9 +177,9 @@ module.exports.controllerFunction = function(app) {
 				}
 
 				else{
-						forInfo.authCheck = true;
-						var myResponse = responseGenerator.generate(false,"Product Deleted successfully",200,forInfo.authCheck);
-						callback(null,myResponse);
+					forInfo.authCheck = true;
+					var myResponse = responseGenerator.generate(false,"Product Deleted successfully",200,forInfo.authCheck);
+					callback(null,myResponse);
 	  			}
 	  		});
 
@@ -199,8 +192,6 @@ module.exports.controllerFunction = function(app) {
 				callback(null,myResponse);
 	  	}
 	};
-
-
 
 	// ASYNC Waterfall TO RUN ONE DB OPERATION AFTER ANOTHER AND ALSO FOR CODE READABILITY
 	async.waterfall([
@@ -215,6 +206,7 @@ module.exports.controllerFunction = function(app) {
 
 				if(forInfo.authCheck == true){
 					console.log("Inside waterfall will delete from cart")
+					
 				// IF USER IS AUTHORIZED, DELETE FROM CART ALSO
 					userModel.findOneAndUpdate({"_id":req.session.user._id},{$pull:{"cart":{"productId":req.params.id}}},function(err,result){
 						if(err){
@@ -265,19 +257,10 @@ module.exports.controllerFunction = function(app) {
 
 		});
 
-
-
-
     // this should be the last line
     // now making it global to app using a middleware
     // think of this as naming your api 
 
-
-
-
     app.use('/product', productRouter);
-
-
-
  
 } //end contoller code

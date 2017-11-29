@@ -33,9 +33,19 @@
                   controllerAs : "edDelCtrl"
             })
             .when('/cart/all',{
-                  templateUrl : "templates/cart.html",
+                  templateUrl : "templates/something.html",
                   controller  : "cartController",
                   controllerAs : "cartCtrl"
+            })
+            .when('/mail/forgot',{
+                  templateUrl : "templates/forgot.html",
+                  controller  : "ForgotController",
+                  controllerAs : "forgotCtrl"
+            })
+            .when('/password/update',{
+                  templateUrl : "templates/updatePassword.html",
+                  controller  : "ForgotController",
+                  controllerAs : "forgotCtrl"
             })
             
 

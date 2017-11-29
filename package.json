@@ -11,7 +11,8 @@
     "express": "latest",
     "express-session": "^1.15.6",
     "mongoose": "latest",
-    "morgan": "latest"
+    "morgan": "latest",
+    "nodemailer": "^4.4.0"
   },
   "devDependencies": {},
   "scripts": {

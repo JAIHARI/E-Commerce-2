@@ -1,6 +1,6 @@
 body{
 
-	padding-top:60px;
+	padding-top:70px;
 }
 
 .signup-home{
@@ -41,6 +41,10 @@ body{
     4px 3px 1px #ccc;
 	padding: 1rem;
 	background-color: #009688;
+}
+
+.table th{
+	text-align: center;
 }
 
 .footer-style{

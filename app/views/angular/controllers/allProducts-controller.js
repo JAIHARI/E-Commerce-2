@@ -39,3 +39,36 @@ myApp.controller("AllProdController",["$http",'$location','cartService','$rootSc
 			})
 		}
 ])
+
+
+//  <!-- ERROR MESSAGE -->
+//    <div id='errorMessage' ng-if='loginCtrl.message !==null' class="col s12 card ">
+//        <h5>{{loginCtrl.message}}</h5>
+//    </div>
+// //INCONTROLLER PARTLA
+// self.message = null;
+// this.loginHandler = function() {
+
+      
+
+//        $http.post('/api/login', self.data)
+//            .then((response) => {
+//                self.loader = false;
+
+//                console.log(response)
+//                if (response.data.error) {
+//                    self.message = response.data.message; // HERE PUT ERROR MESSAGE THEN IT WILL SHOW
+//                }
+
+//                if (!response.data.error) {
+
+//                    $location.path('profile')
+//                }
+
+//            })
+//            .catch((err) => {
+//                console.log(err);
+//            })
+
+
+//    }

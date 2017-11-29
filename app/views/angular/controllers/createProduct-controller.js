@@ -1,7 +1,12 @@
-myApp.controller("CreateProdController",["$http",'$location','cartService',function($http,$location,cartService){
+myApp
+.controller("CreateProdController",["$http",'$location','cartService','$timeout',
+	function($http,$location,cartService,$timeout){
 	
 
 	var main = this;
+
+	this.alerts = false;
+	this.alertText = '';
 	
 	this.productName;
 	this.category;
@@ -27,10 +32,18 @@ myApp.controller("CreateProdController",["$http",'$location','cartService',funct
 
 			if(response.data.status == 200){
 
+				function alertShow(){
 
-				alert(response.data.message);
+	      			main.alerts = true;
+	      			main.alertText = response.data.message;
+	      			$timeout(function() {
+	         			main.alerts = false;
+	         			$location.path('/user/dashboard');
+	      			}, 1500);
 
-				$location.path('/user/dashboard');
+   				};
+
+   				alertShow();
 
 			}
 

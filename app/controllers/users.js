@@ -1,8 +1,6 @@
 var mongoose = require('mongoose');
 var express = require('express');
 
-
-
 // express router // used to define routes 
 var userModel = mongoose.model('User');
 var productModel = mongoose.model('Product');
@@ -17,30 +15,24 @@ var auth = require("./../../middlewares/authorization");
 module.exports.controllerFunction = function(app) {
 
 
-    userRouter.get("/signup",function(req,res){
-
-       // res.redirect("/users/signup");
-    
-    });
-
     userRouter.get('/logout',function(req,res){
       
-      req.session.destroy(function(err) {
+      req.session.destroy(function(err){
         
-
         res.redirect('/');
 
       });
 
 
-
     });//end logout
 
-     userRouter.get('/dashboard',auth.checkLogin,auth.isProductAvailable,function(req,res){
+     userRouter.get('/dashboard',auth.checkLogin,function(req,res){
 
         // GET RECENTLY ADDED PRODUCT USING SORT AND LIMT
 
         req.session.user.productStatus = true ;
+
+        //POPULATING OWNER'S FIELD WITH FIRSTNAME
         
         productModel.findOne({}).sort({'createdAt':-1}).limit(1).populate({path:'owner',select:'firstName -_id'}).exec(function(err,product){
         if(err){
@@ -62,44 +54,62 @@ module.exports.controllerFunction = function(app) {
 
     userRouter.post('/signup',function(req,res){
 
+        var signupInfo = {};
+
      if(req.body.firstname!=undefined && req.body.lastname!=undefined && req.body.password!=undefined && req.body.email!=undefined){     
 
-             var newUser = new userModel({
-
-                username    : req.body.firstname+' '+req.body.lastname,
-                firstName   : req.body.firstname,
-                lastName    : req.body.lastname,
-                email       : req.body.email
-            });
-
-             newUser.password = crypto.encrypt(key,req.body.password);
-             
-
-
-            newUser.save(function(err,result){
-
+        userModel.findOne({"email":req.body.email},function(err,user){
            
-                if(err){
-                    var myResponse = responseGenerator.generate(true,"Check email and password paramater",500,null);
+            if(err){
+                    var myResponse = responseGenerator.generate(true,err,500,null);
                     res.send(myResponse);
-                }
+            }
+            else if(user && user!==null){
+                console.log("user is " + user)
+                console.log("Email taken boss");
+                signupInfo.emailPresent = true;
+                 var myResponse = responseGenerator.generate(false,"Email already taken",200,signupInfo);
+                 res.send(myResponse);
+           }
 
-                else{
+           else{
+                 console.log("Email taken working");
+                 var newUser = new userModel({
+
+                    username    : req.body.firstname+' '+req.body.lastname,
+                    firstName   : req.body.firstname,
+                    lastName    : req.body.lastname,
+                    email       : req.body.email 
+                }); 
+
+                newUser.password = crypto.encrypt(key,req.body.password);
+
+                newUser.save(function(err,result){
+                  
+                  if(err){
+                        var myResponse = responseGenerator.generate(true,"Check paramaters",500,null);
+                        res.send(myResponse);
+                    }
+
+                    else{
 
                     req.session.user = newUser;
-                    // req.session.user.loginStatus = false;
                     delete req.session.user.password ;
-                    
+                        
                     var myResponse = responseGenerator.generate(false,"Signed up successfully",200,newUser);
-                    res.send(myResponse);
+                     res.send(myResponse);
 
-                }
-            });
-        }
-        else{
-             var myResponse = responseGenerator.generate(true,"Parameter missing",500,null);
-              res.send(myResponse);
-        }
+                    }
+
+                });
+            }
+        })//usermodel ends
+
+    }
+    else{
+        var myResponse = responseGenerator.generate(true,"Parameter missing",500,null);
+        res.send(myResponse);
+    }
 
 
     });//end post signup
@@ -130,9 +140,9 @@ module.exports.controllerFunction = function(app) {
                     }
 
                     else{          
-                          req.session.user = foundUser;
-                          foundUser.loginStatus = true ;
-                           delete req.session.user.password ;
+                         req.session.user = foundUser;
+                         foundUser.loginStatus = true ;
+                         delete req.session.user.password ;
 
                           var myResponse = responseGenerator.generate(false,"Success",200,foundUser);
                           res.send(myResponse);
@@ -162,34 +172,6 @@ module.exports.controllerFunction = function(app) {
     // now making it global to app using a middleware
     // think of this as naming your api 
 
-
-// app.use(function(req,res,next){
-
-//     if(req.session && req.session.user){
-//         console.log("Hi, I ran");
-//         userModel.findOne({'email':req.session.user.email},function(err,user){
-
-//             if(user){
-//                 console.log("user is authenticated");
-//                 req.session.user = user;
-//                 console.log(req.session.user);
-//                 delete req.session.user.password; 
-                
-//                 next()
-//             }
-//             else{
-//                 // do nothing , because this is just to set the values
-//                 console.log("something fishy");
-//             }
-//         });
-//     }
-//     else{
-//         console.log("App-level not worjk");
-//         next();
-//     }
-
-
-// });
    
 
     app.use('/user', userRouter);

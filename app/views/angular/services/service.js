@@ -53,14 +53,21 @@ myApp.service("cartService",function($http){
 
 	this.postCartApi = function(productId,data){
 		
-		console.log("I ran");
-		
 		return $http.post('/cart/add/'+''+productId+'',null);
 	}
 
 	this.deleteCartApi = function(productId){
 		
 		return $http.post('/cart/delete/'+''+productId+'',null);
+	}
+
+	this.postResetApi = function(data){
+		console.log(data);
+		return $http.post('/mail/forgotPass',data);
+	}
+
+	this.updatePasswordApi = function(password){
+		return $http.post('/password/update',password);
 	}
 
 })

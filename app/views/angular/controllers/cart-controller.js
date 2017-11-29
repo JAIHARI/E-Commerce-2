@@ -8,7 +8,6 @@ myApp.controller("cartController",["$http",'$location','cartService','$rootScope
 
 	$rootScope.showNav = true; 
 
-
 		cartService.getCartApi()
 		.then(function successCallback(response){
 			console.log(response);
