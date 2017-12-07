@@ -1,3 +1,6 @@
 
 # E-commerce site based on MEAN STACK
+FOLLOWING ARE THE API END POINTS AVAILABLE IN THIS APPLICATION
 
+```
+# user/login  : LOGIN PAGE
