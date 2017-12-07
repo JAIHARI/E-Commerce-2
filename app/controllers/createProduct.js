@@ -1,9 +1,7 @@
+
 var mongoose = require('mongoose');
 var express = require('express');
 
-
-
-// express router // used to define routes 
 var userModel = mongoose.model('User');
 
 var productModel = mongoose.model('Product');
@@ -14,6 +12,13 @@ var async = require("async");
 
 
 module.exports.controllerFunction = function(app) {
+
+		// OBJECT fOR HELPER VARIABLES
+		
+		var forInfo={};
+
+	
+	//-----API TO GET ALL PRODUCTS ----------
 
 	productRouter.get('/all',auth.checkLogin,function(req,res){
 		console.log("get all working");
@@ -34,7 +39,9 @@ module.exports.controllerFunction = function(app) {
 
 	});
 
-			// API TO CREATE A PRODUCT
+
+			// -------API TO CREATE A PRODUCT -------
+
     productRouter.post('/create',auth.checkLogin,function(req,res){
 
     	userModel.findOne({"email":req.session.user.email},function(err,user){
@@ -45,7 +52,8 @@ module.exports.controllerFunction = function(app) {
     		}
     		else{
 
-     			if(req.body.productName!=undefined && req.body.category!=undefined && req.body.color!=undefined && req.body.addInfo!=undefined && req.body.availIn!=undefined){     
+     			if(req.body.productName!=undefined && req.body.category!=undefined && req.body.color!=undefined &&
+     				  req.body.addInfo!=undefined && req.body.availIn!=undefined){     
 
      				console.log("post-if entering");
 	             	var newProduct = new productModel({
@@ -70,7 +78,9 @@ module.exports.controllerFunction = function(app) {
 		             	else{
 			             		
 		             	//POPULATING FIRSTNAME OF USER  INSIDE OWNER FIELD AND RESULT DISPLAYS ONLY FIRSTNAME FIELD
-	           			productModel.findOne({"owner":user._id},{"owner":1,"_id":0}).populate('owner', 'firstName').exec(function(err,popProduct){
+	           			productModel.findOne({"owner":user._id},
+	           			{"owner":1,"_id":0}).populate('owner', 'firstName')
+	           			.exec(function(err,popProduct){
 	           					
 	           				if(err){
             						var myResponse = responseGenerator.generate(true,err,500,null);
@@ -80,7 +90,8 @@ module.exports.controllerFunction = function(app) {
 	            				console.log("Save work");
 	            				newProduct.owner = popProduct.owner;
 			           			// console.log(newProduct);
-			           			var myResponse = responseGenerator.generate(false,"Product created successfull",200,newProduct);
+			           			var myResponse = responseGenerator.generate(
+			           				false,"Product created successfull",200,newProduct);
 				                 res.send(myResponse);
 				             	}
 				             }); //Findone ends
@@ -102,13 +113,16 @@ module.exports.controllerFunction = function(app) {
     });//end post create
 
 
-    //GET PARTICULAR PRODUCT
+    // -------GET PARTICULAR PRODUCT ---------
 
-   productRouter.get('/:id',auth.checkLogin,function(req,res){
+   	productRouter.get('/:id',auth.checkLogin,function(req,res){
 		console.log("get all working");
 
-		// Identifying product with req.params and populating it with its owner's firstName field
-		productModel.findOne({"_id":req.params.id}).populate({path:'owner',select:'firstName -_id'}).exec(function(err,product){
+		// IDENTIFYING PRODUCT WITH REQ.PARAMS AND POPULATING IT WITH ITS OWNER'S FIRSTNAME FIELD
+
+		productModel.findOne({"_id":req.params.id})
+		.populate({path:'owner',select:'firstName -_id'})
+		.exec(function(err,product){
 			if(err){
 				var myResponse = responseGenerator.generate(true,err,500,null);
                     res.send(myResponse);
@@ -125,137 +139,263 @@ module.exports.controllerFunction = function(app) {
 
 	});
 
-   //API TO DELTE A PARTICULAR PRODUCT
-   productRouter.post('/delete/:id',auth.checkLogin,function(req,res){
+   // ------API TO DELETE A PARTICULAR PRODUCT --------
+   	productRouter.post('/delete/:id',auth.checkLogin,function(req,res){
 
-   	var forInfo={};
+	   	//EXPERIMENTAL USAGE OF ASYNC 
 
-   	//Experimental usage of Async 
+	   	var getProduct = function(callback){
 
-   	var getProduct = function(callback){
+			productModel.findOne({"_id":req.params.id})
+			.populate({path:'owner',select:'firstName -_id'})
+			.exec(function(err,product){
 
-		productModel.findOne({"_id":req.params.id}).populate({path:'owner',select:'firstName -_id'}).exec(function(err,product){
-
-			if(err){
-				var myResponse = responseGenerator.generate(true,err,500,null);
-	                   callback(myResponse);			
-			}
-			else{
-				console.log("series-1");
-				callback(null,product);
-			}
-		})
-	};
-
-	var getUser = function(arg1,callback){
-
-		userModel.findOne({"_id":req.session.user._id},function(err,user){
-
-			if(err){
-				var myResponse = responseGenerator.generate(true,err,500,null);
-	                    callback(myResponse);			
-			}
-			else{
-				console.log("series-2");
-				callback(null,arg1,user);
-			}
-		})
-	};
-
-	var checkAuthorityAndDelete = function(arg1,arg2,callback){
-		// console.log(arg1);
-		// console.log(arg2);
-
-		// IF CURRENT PRODUCT'S OWNER IS CURRENT USER THEN DELETE
-		if(arg1.owner.firstName == arg2.firstName){
-			console.log("Checkauthority..you are allowed to delete");
-			productModel.remove({"_id":req.params.id},function(err,product){
-						
 				if(err){
-						var myResponse = responseGenerator.generate(true,err,500,null);
-	             		callback(myResponse);
+					var myResponse = responseGenerator.generate(true,err,500,null);
+		                   callback(myResponse);			
 				}
-
 				else{
-					forInfo.authCheck = true;
-					var myResponse = responseGenerator.generate(false,"Product Deleted successfully",200,forInfo.authCheck);
-					callback(null,myResponse);
-	  			}
-	  		});
+					console.log("series-1");
+					callback(null,product);
+				}
+			})
+		};
+
+		var getUser = function(arg1,callback){
+
+			userModel.findOne({"_id":req.session.user._id},function(err,user){
+
+				if(err){
+					var myResponse = responseGenerator.generate(true,err,500,null);
+		                    callback(myResponse);			
+				}
+				else{
+					console.log("series-2");
+					callback(null,arg1,user);
+				}
+			})
+		};
+
+		var checkAuthorityAndDelete = function(arg1,arg2,callback){
+
+			// IF CURRENT PRODUCT'S OWNER IS CURRENT USER, THEN DELETE
+
+			if(arg1.owner.firstName == arg2.firstName){
+				console.log("Checkauthority..you are allowed to delete");
+
+				productModel.remove({"_id":req.params.id},function(err,product){
+							
+					if(err){
+							var myResponse = responseGenerator.generate(true,err,500,null);
+		             		callback(myResponse);
+					}
+
+					else{
+						forInfo.authCheck = true;
+						var myResponse = responseGenerator.generate(
+							false,"Product Deleted successfully",200,forInfo.authCheck);
+						callback(null,myResponse);
+		  			}
+		  		});
 
 
-		}
-	 	else{
-	 		console.log("Checkauthority..not allowed to delete");
-	  			forInfo.authCheck = false;
-	  			var myResponse = responseGenerator.generate(false,"Not authorized to delete this product",200,forInfo.authCheck);
-				callback(null,myResponse);
-	  	}
-	};
-
-	// ASYNC Waterfall TO RUN ONE DB OPERATION AFTER ANOTHER AND ALSO FOR CODE READABILITY
-	async.waterfall([
-		getProduct,
-		getUser,
-		checkAuthorityAndDelete
-		],function(err,results){
-			if(err){
-				res.send(err)
 			}
-			else{
+		 	else{
+		 			console.log("Checkauthority..not allowed to delete");
 
-				if(forInfo.authCheck == true){
-					console.log("Inside waterfall will delete from cart")
-					
-				// IF USER IS AUTHORIZED, DELETE FROM CART ALSO
-					userModel.findOneAndUpdate({"_id":req.session.user._id},{$pull:{"cart":{"productId":req.params.id}}},function(err,result){
-						if(err){
-							var myResponse = responseGenerator.generate(true,"error is"+error+"",500,null);
-							res.send(myResponse);
-						}
+		  			forInfo.authCheck = false;
 
-						else{
+		  			var myResponse = responseGenerator.generate(
+		  				false,"You don't have the permission to delete other's product",200,forInfo.authCheck);
+					callback(null,myResponse);
+		  	}
+		};
 
-						 var myResponse = responseGenerator.generate(false,"PRODUCT DELETED SUCCESSFULLY",200,forInfo.authCheck);
-						 res.send(myResponse);
-						}
-					})
 
+		// ASYNC Waterfall TO RUN ONE DB OPERATION AFTER ANOTHER AND ALSO FOR CODE READABILITY
+		async.waterfall([
+			getProduct,
+			getUser,
+			checkAuthorityAndDelete
+			],function(err,results){
+				if(err){
+					res.send(err)
 				}
-
 				else{
-					var myResponse = responseGenerator.generate(false,"Action Denied",200,forInfo.authCheck);
-					res.send(myResponse);
-				}
 
-			}		
-	 		}) // ASYNC series ends
+					if(forInfo.authCheck == true){
+						console.log("Inside waterfall will delete from cart")
+						 
+						 // IF USER IS AUTHORIZED, DELETE FROM CART OF ALL USERS
+						 userModel.update({},
+							{$pull:{"cart":{"productId":req.params.id}}},{multi:true},function(err,iter){
+								if(err){
+									res.send(err);
+								}
+								else{
+									res.send(results);
+								}
+						})
+					}
+
+					else{
+
+						res.send(results);
+					}
+
+				}		
+		 	}) // ASYNC WATERFALL ENDS
 		
 
 	});
 
-   	// API TO EDIT A PRODUCT
+
+   	// ------API TO EDIT A PRODUCT ------------
+
 	productRouter.put('/edit/:id',auth.checkLogin,function(req,res){
 			console.log("get all working");
 
 			var update = req.body ;
-			console.log("Put working" + update);
 
-			productModel.findOneAndUpdate({"_id":req.params.id},update,{new: true},function(err,product){
+		var getProduct = function(callback){
+
+			productModel.findOne({"_id":req.params.id})
+			.populate({path:'owner',select:'firstName -_id'})
+			.exec(function(err,product){
+
 				if(err){
 					var myResponse = responseGenerator.generate(true,err,500,null);
-	                    res.send(myResponse);
+		                   callback(myResponse);			
+				}
+				else{
+					console.log("series-1");
+					callback(null,product);
+				}
+			})
+		};
+
+		var getUser = function(arg1,callback){
+
+			userModel.findOne({"_id":req.session.user._id},function(err,user){
+
+				if(err){
+					var myResponse = responseGenerator.generate(true,err,500,null);
+		                    callback(myResponse);			
+				}
+				else{
+					console.log("series-2");
+					callback(null,arg1,user);
+				}
+			})
+		};
+
+		var checkAuthorityAndEdit = function(arg1,arg2,callback){
+			
+
+			// IF CURRENT PRODUCT'S OWNER IS CURRENT USER THEN DELETE
+			if(arg1.owner.firstName == arg2.firstName){
+				console.log("Checkauthority..you are allowed to delete");
+
+				productModel.findByIdAndUpdate({"_id":req.params.id},update,{new:true},
+					function(err,product){
+							
+					if(err){
+							var myResponse = responseGenerator.generate(true,err,500,null);
+		             		callback(myResponse);
+					}
+
+					else{
+						forInfo.authEditCheck = true;
+						var myResponse = responseGenerator.generate(
+							false,"Product Edited successfully",200,forInfo.authEditCheck);
+						callback(null,myResponse);
+		  			}
+		  		});
+
+
+			}
+		 	else{
+		 			console.log("Checkauthority..not allowed to delete");
+
+		  			forInfo.authEditCheck = false;
+
+		  			var myResponse = responseGenerator.generate(
+		  				false,"You don't have the permission to EDIT other's product",200,forInfo.authEditCheck);
+					callback(null,myResponse);
+		  	}
+		};
+
+			//GET PRODUCT, GET USER AND CHECK CURRENT USER'S AUTHORITY OPERATIONS USING WATERFALL
+			async.waterfall([
+			getProduct,
+			getUser,
+			checkAuthorityAndEdit
+			],function(err,results){
+				if(err){
+					res.send(err)
 				}
 				else{
 
-					console.log(product);
 
-					var myResponse = responseGenerator.generate(false,"Product Edited successfully",200,product);
-					res.send(myResponse);
-	  			}
-	  		});
+					if(forInfo.authEditCheck == true){
+						
+						console.log("Inside waterfall edit from cart")
+					
+						//STORING UPDATED-VALUES IN AN OBJECT TO BE USED WITH $SET(Mongoose)			
+						var updateObj = {$set: {}};
+						for(var param in req.body) {
+  							updateObj.$set['cart.$.'+param] = req.body[param];
+ 						}
+						
+						//UPDATING CART OF ALL-USERS WITH THIS PRODUCT
+						 userModel.update({"cart.productId":req.params.id}, 
+						 	updateObj,{multi:true},function(err,iter){
+								if(err){
+									res.send(err);
+								}
+								else{
+									console.log("Hi");
+									console.log(results);
+									console.log("iter");
+									console.log(iter);
 
-		});
+							
+									res.send(results);
+								}
+						})
+						 
+						 
+						 
+					}
+
+					else{
+
+						res.send(results);
+					}
+
+				}		
+		 	}) // ASYNC WATERFALL ENDS
+
+			// console.log("Put working" + update);
+
+			// productModel.findOneAndUpdate({"_id":req.params.id},update,{new: true},function(err,product){
+			// 	if(err){
+			// 		var myResponse = responseGenerator.generate(true,err,500,null);
+	  //                   res.send(myResponse);
+			// 	}
+			// 	else{
+
+			// 		console.log(product);
+
+			// 		var myResponse = responseGenerator.generate(false,"Product Edited successfully",200,product);
+			// 		res.send(myResponse);
+	  // 			}
+	  // 		});
+
+
+
+
+	});
 
     // this should be the last line
     // now making it global to app using a middleware

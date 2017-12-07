@@ -1,45 +1,46 @@
 
 
-myApp.controller("ForgotController",["$http",'$location','cartService','$rootScope',function($http,$location,cartService,$rootScope){
+myApp.controller("ForgotController",["$http",'$location','cartService','$rootScope','SweetAlert',
+	function($http,$location,cartService,$rootScope,SweetAlert){
 	
 	var main = this ;
-
-	this.alerts = false;
-	this.alertText = false; 
 
 	this.email ;
 	this.emailForReset;
 	this.newPassword;
-
-	$rootScope.showNav =false;  // hiding navbar for login-page
-
 	
-	 //FOR RESET PASSWORD
+	 // RESET PASSWORD FUNCTION
 	 
 	this.resetPass = function(email){
 
 		var emailToSent = {
 			email : main.emailForReset
 		};
-		console.log("email "+emailToSent);
 
 		cartService.postResetApi(emailToSent)
 		.then(function successCallback(response){
 			console.log(response);
 
-			if(response.data.status ==200){
+			if(response.data.status ==200 && response.data.data ==true){
 
-				function emailAlert(){
+				SweetAlert.swal({
+					title:"Email-Sent",
+				  	text: ""+response.data.message+"",
+				   	type: "success",
+				   	showCancelButton: false,
+				   	confirmButtonColor: "#5cb85c",confirmButtonText: "Ok!",
+				   	closeOnConfirm: true});
+			}
 
-	      			main.alerts = true;
-	      			main.alertText = response.data.message;
-	      			$timeout(function() {
-	         			main.alerts = false;
-	      			}, 1500);
+			else{
 
-   				};
-
-   				emailAlert();
+				SweetAlert.swal({
+					title:"OOPS!",
+				  	text: ""+response.data.message+"",
+				   	type: "error",
+				   	showCancelButton: false,
+				   	confirmButtonColor: "#de463b",confirmButtonText: "Got it!",
+				   	closeOnConfirm: true});
 			}
 
 		}, function errorCallback(reason){
@@ -48,13 +49,53 @@ myApp.controller("ForgotController",["$http",'$location','cartService','$rootSco
 		})
 	};
 
+
+	// UPDATE PASSWORD FUNCTION
+
 	this.updatePassword = function(){
 
-		var passwordSent =  main.newPassword ;
+		var infoToUpdate = {
 
-		cartService.updatePasswordApi(passwordSent)
+			password:main.newPassword
+		};
+
+		cartService.updatePasswordApi(infoToUpdate)
 		.then(function successCallback(response){
 			console.log(response);
+
+			if(response.data.mailLog ==false){
+				SweetAlert.swal({
+					title:"Access denied",
+				  	text: ""+response.data.message+"",
+				   	type: "error",
+				   	showCancelButton: false,
+				   	confirmButtonColor: "#de463b",confirmButtonText: "Ok!",
+				   	closeOnConfirm: true},
+				   	function(){
+				   		$location.path('/password/forgot');
+				});
+			}
+			else{
+				
+				if(response.data.status ==200){
+
+					SweetAlert.swal({
+						title:"Heeee-haaaa!!",
+					  	text: ""+response.data.message+"",
+					   	type: "success",
+					   	showCancelButton: false,
+					   	confirmButtonColor: "#5cb85c",confirmButtonText: "Ok",
+					   	closeOnConfirm: true},
+					   	function(){
+					   		$location.path('/');
+					});
+				}
+
+				else{
+
+					alert(response.data.message);
+				}
+			}
 
 		}, function errorCallback(reason){
 			console.log(reason);

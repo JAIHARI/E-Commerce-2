@@ -9,8 +9,7 @@ myApp.controller("SignupController",["$http",'$location','cartService',function(
 	this.password;
 
 	this.submitSignup = function(){
-		// console.log("Submit signup");
-
+	
 		var signupData = {
 
 			firstname : main.firstname,
@@ -21,8 +20,6 @@ myApp.controller("SignupController",["$http",'$location','cartService',function(
 
 		cartService.signupApi(signupData)
 		.then(function successCallback(response){
-
-			// console.log(response);
 
 			if(response.data.status == 200 && response.data.data.emailPresent !== true){
 				$location.path('/user/dashboard'); 

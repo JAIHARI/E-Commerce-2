@@ -7,7 +7,11 @@ myApp.controller("LoginController",["$http",'$location','cartService','$rootScop
 	this.email ;
 	this.emailForReset;
 	this.password;
-	$rootScope.showNav =false;  // hiding navbar for login-page
+
+	// HIDING NAVBAR-links FOR LOGIN-PAGE
+	$rootScope.showHome =false; 
+	$rootScope.showCart =false; 
+	$rootScope.showLogout =false;  
 
 	this.submitLogin = function(){
 
@@ -19,8 +23,7 @@ myApp.controller("LoginController",["$http",'$location','cartService','$rootScop
 
 		cartService.loginApi(loginData)
 		.then(function successCallback(response){
-
-			// console.log(response.data);
+			console.log(response);
 
 			if(response.data.status == 200){
 

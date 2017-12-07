@@ -12,7 +12,7 @@
               controller : "DashController",
               controllerAs : "dashCtrl"
             })
-      		.when("/user/signup",{
+      		  .when("/user/signup",{
                templateUrl : "templates/signup.html",
                controller : "SignupController",
                controllerAs : "signupCtrl"
@@ -33,11 +33,11 @@
                   controllerAs : "edDelCtrl"
             })
             .when('/cart/all',{
-                  templateUrl : "templates/something.html",
+                  templateUrl : "templates/cart.html",
                   controller  : "cartController",
                   controllerAs : "cartCtrl"
             })
-            .when('/mail/forgot',{
+            .when('/password/forgot',{
                   templateUrl : "templates/forgot.html",
                   controller  : "ForgotController",
                   controllerAs : "forgotCtrl"
@@ -46,6 +46,10 @@
                   templateUrl : "templates/updatePassword.html",
                   controller  : "ForgotController",
                   controllerAs : "forgotCtrl"
+            })
+            .when('/shop/404',{
+
+                  templateUrl: "templates/my404.html"
             })
             
 

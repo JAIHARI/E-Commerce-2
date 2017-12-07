@@ -1,6 +1,6 @@
 myApp
-.controller("CreateProdController",["$http",'$location','cartService','$timeout',
-	function($http,$location,cartService,$timeout){
+.controller("CreateProdController",["$http",'$location','cartService','$timeout','$rootScope','SweetAlert',
+	function($http,$location,cartService,$timeout,$rootScope,SweetAlert){
 	
 
 	var main = this;
@@ -14,6 +14,10 @@ myApp
 	this.addInfo;
 	this.availIn;
 
+	$rootScope.showHome =true; 
+	$rootScope.showCart =true; 
+	$rootScope.showLogout =true;
+
 	this.submitCreate = function(){
 
 		var createdData = {
@@ -24,14 +28,14 @@ myApp
 				color				: main.color,
 				addInfo				: main.addInfo,
 				availIn	  			: main.availIn
-		}
+		};
+
 		cartService.postProdApi(createdData)
 		.then(function successCallback(response){
 
-			// console.log(response.data);
-
 			if(response.data.status == 200){
 
+				//ALERT MESSAGES USING $TIMEOUT (Experimental-Usage)
 				function alertShow(){
 
 	      			main.alerts = true;
@@ -44,13 +48,21 @@ myApp
    				};
 
    				alertShow();
-
 			}
 
 			else{
 
-				alert(response.data.message);
-				$location.path('/')
+				SweetAlert.swal({
+					
+				   title: ""+response.data.message+"",
+				   type: "info",
+				   showCancelButton: false,
+				   confirmButtonColor: "#5cb85c",confirmButtonText: "Ok!",
+				   closeOnConfirm: true}, 
+					function(){ 
+				   		$location.path('/');
+				   		
+				});
 			}
 
 

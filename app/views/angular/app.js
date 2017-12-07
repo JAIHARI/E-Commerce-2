@@ -1,4 +1,4 @@
 
 // Module declaration here
-
-var myApp = angular.module("cart",["ngRoute","ngAnimate"]);
+//oitzero's angular wrapper for sweetalert
+var myApp = angular.module("cart",["ngRoute","ngAnimate","oitozero.ngSweetAlert"]);

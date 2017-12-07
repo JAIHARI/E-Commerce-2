@@ -13,7 +13,7 @@ var cartContent = new Schema({
 	productName:{type:String,default:'',required:true},
 	category  : {type:String,default:''},
 	price     : {type:Number,default:0,required:true},
-	amount	: 	{type:Number,default:1,required:true}
+	number	: 	{type:Number,default:1,required:true}
 
 })
 

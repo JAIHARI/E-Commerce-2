@@ -1,7 +1,17 @@
-<div class="row" style="margin-bottom:4rem;">
-	
-	<div class="col-12 col-sm-10 sm-offset-1">
-		<h2 class="cart-title"> Shopping Summary </h2>
+<div class="row" style="margin-bottom:2rem;">
+	<div class="col-12">
+		<div class="row">
+			<div class="col-8 col-md-9 cart-title">
+				<h3> Shopping Summary </h3>
+			</div>
+			<div class="col-4 col-md-3 text-center user-title" ng-if="cartCtrl.showAsset">
+			    <h5>{{ cartCtrl.firstName }}!</h5>
+			    <h6>
+			    <span><i class="fa fa-shopping-bag fa-2x" style="margin-right: 0.5rem;"></i>
+			    </span>
+			    &#8377; {{ cartCtrl.cartTotal }}</h6>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -12,8 +22,7 @@
 			<thead class="text-center">
 			<tr>
 				
-				<th>Product</th>
-				<th>Price</th>
+				<th>Product-Details</th>
 				<th>Quantity</th>	
 				<th>Total</th>
 			</tr>
@@ -21,36 +30,47 @@
 			<tbody ng-repeat = "items in cartCtrl.cartItems">
 				<tr>
 					
-					<td style="display: flex;justify-content: space-between">{{ items.productName }}
-						<button class="btn btn-danger btn-sm" ng-click="cartCtrl.deleteItem(items.productId)">
-							<span><i class="fa fa-trash" data-toggle="tooltip" data-placement="bottom" title="Remove from cart"></i></span>
-						</button>
+					<td class="product-td" style="width:35%;">
+					<div>
+						<h6>Name: <b>{{ items.productName }}</b></h6>
+						<ul class="list-inline">
+							<li class="list-inline-item">Price : {{ items.price }}</li>
+							<li class="list-inline-item">Category : {{ items.category }}</li>
+						</ul>
+						<button class="btn btn-danger btn-sm" ng-click="cartCtrl.deleteItem(items.productId,$index,false)">
+       						Delete
+       					</button>
+       					</div>
 					</td>
-					<td>{{ items.price }}</td>
-					<td>
-						<div style="display: flex;justify-content: center;">
-							<button class="btn btn-muted btn-sm"><span><i class="fa fa-plus"></i></span>
-							</button>
-							<div class="col-4">
-							<input type="text" class="form-control" name="quantity" value='{{ items.amount }}'>
-							</div>
-							<button class="btn btn-muted btn-sm"><span><i class="fa fa-minus"></i></span>
-							</button>
+					
+					<td class="product-quantity" style="width:45%;">
+						<div class="product-flex">
+							<button class="btn btn- btn-sm cart-button" ng-click="cartCtrl.incQuantity(items.productId,$index,items.number)">
+			                	<span><i class="fa fa-plus"></i></span>
+			                </button>  
+							<div class="col-8 form-group" style="margin: 0.5rem auto;">          
+				                <input type="text" class="form-control" name="quantity" value='{{ items.number }}'>
+				            </div>    
+			                <button class="btn btn-info btn-sm cart-button" ng-disabled="items.number <= 1" ng-click="cartCtrl.deleteItem(items.productId,$index,true)">
+			                   <span><i class="fa fa-minus"></i></span>
+			                </button>      
 						</div>
 					</td>
-					<td>Rs {{ (items.price) * (items.amount) }}</td>
+					<td style="width:20%;">
+						 <p class="card-text text-center"><b>&#8377; {{ (items.price) * (items.number) }}</b></p>
+					</td>
 
 				</tr>
 			</tbody>
 		</table>
-		</div>
-	<!-- </div> -->
+		<!-- </div> -->
+	</div>
 </div>
 <!-- </div> -->
 <div class="row" ng-if="cartCtrl.showCartIcon">
 	<div class="col-12 text-center">
-		<span><i class="fa fa-shopping-cart fa-5x" style="color:dimgray"></i></span>
-		<h6 class="text-muted">No products available</h6>
+		<span><i class="fa fa-shopping-cart" style="color:dimgray;font-size:7em;"></i></span>
+		<h5 class="text-muted">No products available</h5>
 	</div>	
 </div>
 

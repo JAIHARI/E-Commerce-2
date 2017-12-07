@@ -8,13 +8,15 @@
 	 <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet"> 
 	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-                  
+  <link href="https://fonts.googleapis.com/css?family=Amatic+SC|Berkshire+Swash|Indie+Flower" rel="stylesheet">                  
                       <!-- FONT AWESOME -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+                  <!-- SWEET ALERT CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" rel="stylesheet">
 	
     				<!-- CUSTOM stylesheet -->
 	<link rel="stylesheet" type="text/css" href="css/style.css">
-  <!-- <link rel="stylesheet" type="text/css" href="css/toTop.css"> -->
+  <!-- link rel="stylesheet" type="text/css" href="css/toTop.css"> -->
 
 </head>
 <body ng-controller = "LoginController as loginCtrl">
@@ -28,11 +30,11 @@
           </button>
           <a class="navbar-brand nav-link" style="color: ghostwhite;">Let's Shop</a>
         </div>
-        <div id="navbar" ng-if="showNav">  
+        <div id="navbar">  
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a class="nav-link" ng-href="#/user/dashboard">Home</a></li>
-            <li class="nav-item"><a class="nav-link" ng-href="#/cart/all">Cart</a></li>
-            <li class="nav-item"><a class="nav-link" ng-href="/user/logout">Logout</a></li>
+            <li class="nav-item" ng-if="showHome"><a class="nav-link" ng-href="#/user/dashboard">Home</a></li>
+            <li class="nav-item" ng-if="showCart"><a class="nav-link" ng-href="#/cart/all">My-Cart</a></li>
+            <li class="nav-item" ng-if="showLogout"><a class="nav-link" ng-href="/user/logout">Logout</a></li>
           </ul>
         </div>
       </div>
@@ -64,10 +66,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-route.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-animate.min.js"></script>
-	
-    <script type="text/javascript" src="angular/app.js"></script>
-    <!-- <script type="text/javascript" src="angular/directives/customdirectives.js"></script> -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 
+    <script type="text/javascript" src="js/sweetalert.js"></script>
+
+    <script type="text/javascript" src="angular/app.js"></script>
         
 	  <script type="text/javascript" src="angular/services/service.js"></script>
 						<!-- Angular controllers -->
