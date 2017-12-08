@@ -6,7 +6,7 @@ var userModel = mongoose.model('User');
 
 var responseGenerator = require("./../libs/responseGenerator");
 
-//	MIDDLE WARE TO CHECK IF USER IS LOGGED IN
+//	MIDDLEWARE TO CHECK IF USER IS LOGGED IN
 module.exports.checkLogin = function(req,res,next){
 
 	if(!req.session.user){
@@ -23,14 +23,37 @@ module.exports.checkLogin = function(req,res,next){
 
 };
 
+//	MIDDLEWARE TO Logout *LOGGED IN USER* FROM ENTERING SIGNUP PAGE 
+module.exports.isLoggedIn = function(req,res,next){
+	
+	if(req.session.loginStatus){
+
+		console.log("Logged in user trying to signup");
+		
+		req.session.destroy(function(err){
+        
+        	res.status(200).send({"loggedIn":true,"message":"Your session will be lost"});
+
+      	});
+	}
+
+	else{
+
+		next();
+	}
+
+};
+
 // MIDDLEWARE TO CHECK IF MAIL IS SENT, ONLY THEN GIVE ACCESS TO UPDATE PASSWORD
 module.exports.isMailSent = function(req,res,next){
 
 	if(!req.session.sentMail){
 		
 		res.status(200).send(
-			{"mailLog":false,"message":"Please visit forgot password screen to make this action!"}
-			);
+			{"mailLog":false,
+			"message":"Please visit forgot password screen to make this action!"
+			}
+		);
 	}
 
 	else{

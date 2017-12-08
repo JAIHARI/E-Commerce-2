@@ -1,37 +1,38 @@
 
-		<!-- <div class="jumbotron jumbotron-fluid">
-		  <div class="container"> -->
+			<!-- DASHBOARD SETUP -->
 		  	<div class="row">
 		  		<div class="col-12 text-center">
 			  		<h4>Hi, {{ dashCtrl.userName }}</h4>
 				   	<div class="dash-button">
 						<a class="btn btn-warning" ng-href="#/product/create" style="cursor: pointer;margin-top: 0.5rem;
 							color:#160b09;">
-							<span><i class="fa fa-level-up fa-2x text-muted" style="padding:0px 10px;" aria-hidden="true"></i></span>Create a Product
+							<span><i class="fa fa-level-up text-muted" style="padding:0px 10px;" aria-hidden="true"></i></span>Create a Product
 						</a>
 						<a class="btn btn-warning" ng-href="#/product/all" style="cursor: pointer;margin-top: 0.5rem;
 							color:#160b09;">
-							<span><i class="fa fa-shopping-bag fa-2x text-muted" style="padding:0px 10px;" aria-hidden="true"></i></span>View products
+							<span><i class="fa fa-shopping-bag text-muted" style="padding:0px 10px;" aria-hidden="true"></i></span>View products
 						</a>
 					</div>
 				</div>
 
 		  	</div>
 		  	<hr>
+
+		  	<!-- RECENTLY ADDED PRODUCT -->
 		  	<div class="row" ng-if="dashCtrl.productAvail">
-		  		<div class="col-12 col-sm-6">
+		  		<div class="col-12 col-sm-6 col-md-5 offset-md-1">
 					<div class="card dash-card">
 					  <div class="card-header">
 					    <h6>Recently Added Product</h6>
 					  </div>
 					  <div class="card-block text-center">
-					    <!-- <h4 class="card-title">Special title treatment</h4> -->
+					    
 					    <ul class="list-group list-group-flush">
 						    <li class="list-group-item">Name : {{ dashCtrl.recentProduct.productName }}</li>
 						    <li class="list-group-item">Category : {{ dashCtrl.recentProduct.category }}</li>
 						    <li class="list-group-item">Owner : {{ dashCtrl.recentProduct.owner.firstName }}</li>
 		  				</ul>
-		  				<div style="display: flex;justify-content: space-between;margin-top: 0.6rem;">
+		  				<div style="display: flex;justify-content: space-between;margin-top: 0.8rem;">
 						    <a href="#/product/{{dashCtrl.recentProduct._id }}" class="btn btn-primary"> More
 						    </a>
 						    <span ng-click="dashCtrl.addToCart()"><i class="fa fa-plus-circle fa-2x" data-toggle="tooltip" data-placement="bottom" title="Add to cart"></i></span>
@@ -39,23 +40,7 @@
 					  </div>
 					</div>
 				</div>
-				<div class="col-10">
-					 <!--  ALERT MESAGE IF PRODUCT ALREADY PRESENT -->
-					<div class="card alert-style" ng-if="dashCtrl.alerts">
-						  <div class="card-block">
-						    <i>{{ dashCtrl.alertText }}</i>
-						  </div>
-					</div>
-						<!--  ALERT MESAGE IF PRODUCT ADDED -->
-					<div class="card" style="background-color: #72cc76; margin-top:1rem;" ng-if="dashCtrl.addAlerts">
-						  <div class="card-block">
-						    <i>{{ dashCtrl.addAlertText }}</i>
-						  </div>
-					</div>
-
-				</div>
 			</div>
 		    
-		<!-- </div>
-	</div> -->
+		
 

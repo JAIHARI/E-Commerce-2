@@ -17,12 +17,13 @@ myApp.controller("ForgotController",["$http",'$location','cartService','$rootSco
 			email : main.emailForReset
 		};
 
+		
 		cartService.postResetApi(emailToSent)
 		.then(function successCallback(response){
 			console.log(response);
 
 			if(response.data.status ==200 && response.data.data ==true){
-
+				console.log("finsd");
 				SweetAlert.swal({
 					title:"Email-Sent",
 				  	text: ""+response.data.message+"",

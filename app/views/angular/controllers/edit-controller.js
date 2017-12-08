@@ -21,9 +21,13 @@ myApp.controller("EditDeleteController",
 	$rootScope.showCart =true; 
 	$rootScope.showLogout =true;
 
-	cartService.getProdApi(this.productId)
+	// FUNCTION TO GET ALL PRODUCTS
+	this.getOneProduct=function(){
+		
+		cartService.getProdApi(main.productId)
 		.then(function successCallback(response){
 			console.log(response);
+
 			var responseData = response.data.data ;
 			
 			if(response.data.userLog == false){
@@ -32,7 +36,7 @@ myApp.controller("EditDeleteController",
 				   title: ""+response.data.message+"",
 				   type: "info",
 				   showCancelButton: false,
-				   confirmButtonColor: "##5cb85c",confirmButtonText: "Got it!",
+				   confirmButtonColor: "#5cb85c",confirmButtonText: "Got it!",
 				   closeOnConfirm: true}, 
 					function(){ 
 				   		$location.path('/');
@@ -52,8 +56,11 @@ myApp.controller("EditDeleteController",
 				console.log(reason);
 				alert("Error in Post");
 			})
+	};
 
-	// FUNCTION THAT HAS THE LOGIC FOR DELETING A PRODUCT
+	this.getOneProduct();
+
+	// FUNCTION THAT HAS THE LOGIC FOR DELETING A PRODUCT ALONG WITH SWEETALERTS!
 	this.sweetDeleteFunction = function(){
 		cartService.deleteProdApi(main.productId)
 		.then(function successCallback(response){
@@ -135,7 +142,7 @@ myApp.controller("EditDeleteController",
 			SweetAlert.swal({
 					
 				   title: "Sorry",
-				   text: "Only Product's Owner is granted this action",
+				   text: "Only Product's Owner has been granted this action",
 				   type: "info",
 				   showCancelButton: false,
 				   confirmButtonColor: "#de463b",confirmButtonText: "I understand!",

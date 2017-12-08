@@ -1,17 +1,9 @@
 
 
-myApp.controller("DashController",["$http",'$location','cartService','$rootScope','$timeout','SweetAlert'
-	function($http,$location,cartService,$rootScope,$timeout,SweetAlert){
+myApp.controller("DashController",["$http",'$location','cartService','$rootScope','SweetAlert',
+	function($http,$location,cartService,$rootScope,SweetAlert){
 	
 	var main = this ; 
-
-	// ALERT, WHEN PRODUCT ALREADY PRESENT IN CART
-	this.alerts = false;
-	this.alertText ='';
-	
-	//ALERT, WHEN PRODUCT ADDED TO CART
-	this.addAlerts = false;
-	this.addAlertText ='';
 
 	this.userProducts = [];
 	this.productAvail;
@@ -24,10 +16,15 @@ myApp.controller("DashController",["$http",'$location','cartService','$rootScope
 
 	this.showForm = false;
 
+	this.getDashboard = function(){
+		
+
 		cartService.dashboardApi()
 		.then(function successCallback(response){
 			console.log(response);
 
+			var dashData = response.data.data;
+			
 			if(response.data.userLog == false){
 				
 				SweetAlert.swal({
@@ -45,14 +42,15 @@ myApp.controller("DashController",["$http",'$location','cartService','$rootScope
 
 			else{
 
-				 main.userName = response.data.data.firstName;
-				 cartService.userFirstName = main.userName ;
+				cartService.userFirstName = dashData.firstName ;
+				 main.userName = cartService.userFirstName;
+				 // console.log(main.userName);
 
-				if(response.data.data.userProducts != null){
+				if(dashData.dashProduct != null){
 					main.productAvail = true;
 					console.log("products available");
 
-				  main.recentProduct = response.data.data.userProducts;
+				  main.recentProduct = dashData.dashProduct;
 				  console.log(main.recentProduct);
 					
 				}
@@ -67,60 +65,59 @@ myApp.controller("DashController",["$http",'$location','cartService','$rootScope
 			}, function errorCallback(reason){
 				console.log(reason);
 				alert("Error in Post");
-			})
+		})
+	};
 
-		this.addToCart = function(){
-			
-			var toCart = {
-				alertMessage : true,
-				itemCount : null // RANDOM VALUE TO CHECK REFERENCE OF THE VIEW
-			};
-	
-			cartService.postCartApi(main.recentProduct._id,toCart)
-			.then(function successCallback(response){
-				 console.log(response);
-				 
-				 //IF PRODUCT ALREADY EXISTS
+	this.getDashboard();
 
-				if(response.data.status==200 && response.data.data==true){
-				 	function alertAddCart(){
 
-		      			main.alerts = true;
-		      			main.alertText = response.data.message;
-		      			$timeout(function() {
-		         			main.alerts = false;
-		      			}, 2000);
+	this.addToCart = function(){
+		
+		var toCart = {
+			alertMessage : true,
+			itemCount : null // RANDOM VALUE TO CHECK REFERENCE OF THE VIEW
+		};
 
-   					};
+		cartService.postCartApi(main.recentProduct._id,toCart)
+		.then(function successCallback(response){
+			 console.log(response);
+			 
+			 //IF PRODUCT ALREADY EXISTS
 
-   					alertAddCart();
-
-				}
+			if(response.data.status==200 && response.data.data==true){
+			 	SweetAlert.swal({
 				
-				//IF PRODUCT IS ADDED TO CART 
-				else if(response.data.status==200 && response.data.data.addedToCart==true){
+				   title: "Hey!",
+				   text: ""+response.data.message+"",
+				   type: "info",
+				   showCancelButton: false,
+				   confirmButtonColor: "#5cb85c",confirmButtonText: "Ok!",
+				   closeOnConfirm: true});
 
-				 	function alertAddCart(){
 
-		      			main.addAlerts = true;
-		      			main.addAlertText = response.data.message;
-		      			$timeout(function() {
-		         			main.addAlerts = false;
-		         			
-		         			$location.path('/cart/all');
-		      			}, 1300);
-
-   					};
-
-   					alertAddCart();
-
-				 } 
+			}
 			
-			}, function errorCallback(reason){
-				console.log(reason);
-				alert("Error in Post");
-			})
+			//IF PRODUCT IS ADDED TO CART 
+			else if(response.data.status==200 && response.data.data.addedToCart==true){
+
+				SweetAlert.swal({				
+				   	title: "Success",
+				   	text: ""+response.data.message+"",
+				   	type: "success",
+				   	showCancelButton: false,
+				   	confirmButtonColor: "#5cb85c",confirmButtonText: "Ok!",
+				   	closeOnConfirm: true}, 
+					function(){ 
+				   		$location.path('/cart/all');
+			   		
+				});
+
+			 } 
+		
+		}, function errorCallback(reason){
+			console.log(reason);
+			alert("Error in Post");
+		})
 	}
 		
-	}
-])
+}])

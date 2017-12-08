@@ -1,9 +1,11 @@
 			
 
-			<h2 class="text-center"> Products-Available </h2>
+			<h2 class="text-center" style="font-family: 'Berkshire Swash', cursive;"> Products - Available </h2>
+			<!-- ALERT IF NO PRODUCTS PRESENT -->
 			<div class="alert alert-danger" ng-if="allCtrl.emptyProducts" role="alert">
 			  <strong> No products available </strong>
 			</div>
+			<!-- ALL PRODUCTS -->
 			<div class="row">
 		    	<div class="col-10 offset-1 col-md-4 offset-md-1 all-products text-center" ng-repeat = "item in allCtrl.allProducts">
 		    		<ul class="list-group list-group-flush">

@@ -2,7 +2,6 @@ var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
 var logger = require('morgan');
-
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
@@ -22,6 +21,7 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false }  // make true incase of SSL certificate
 }));
+
 
 //built-in Node-module to get path.No installation required
 var path = require("path");

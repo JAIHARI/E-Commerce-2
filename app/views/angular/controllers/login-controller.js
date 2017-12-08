@@ -1,6 +1,7 @@
 
 
-myApp.controller("LoginController",["$http",'$location','cartService','$rootScope',function($http,$location,cartService,$rootScope){
+myApp.controller("LoginController",["$http",'$location','cartService','$rootScope','SweetAlert',
+	function($http,$location,cartService,$rootScope,SweetAlert){
 	
 	var main = this ; 
 
@@ -23,17 +24,17 @@ myApp.controller("LoginController",["$http",'$location','cartService','$rootScop
 
 		cartService.loginApi(loginData)
 		.then(function successCallback(response){
-			console.log(response);
+			// console.log(response);
 
 			if(response.data.status == 200){
-
+				
 				$location.path('/user/dashboard');
 
 			}
 
 			else{
 
-				alert(response.data.message);
+				
 			}
 
 
@@ -41,7 +42,7 @@ myApp.controller("LoginController",["$http",'$location','cartService','$rootScop
 				console.log(reason);
 				alert("Error in Login-Post");
 			})
-	}
+	};
 
 	
 }])

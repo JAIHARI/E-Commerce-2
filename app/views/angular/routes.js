@@ -55,7 +55,7 @@
 
             .otherwise(
                       {
-                          redirectTo:'/'
+                          redirectTo:'/shop/404'
                           
                       }
                   )

@@ -9,6 +9,8 @@ myApp.controller("AllProdController",["$http",'$location','cartService','$rootSc
 	$rootScope.showLogout =true;
 	
 	this.allProducts = [];
+
+	this.getAllProducts = function(){
 	
 		cartService.getAllApi()
 		.then(function successCallback(response){
@@ -45,8 +47,7 @@ myApp.controller("AllProdController",["$http",'$location','cartService','$rootSc
 				   		$location.path('/');
 				   		
 					});
-				
-				
+								
 			}
 
 
@@ -54,5 +55,7 @@ myApp.controller("AllProdController",["$http",'$location','cartService','$rootSc
 				console.log(reason);
 				alert("Error in Login-Post");
 			})
-		}
-])
+	};
+
+	this.getAllProducts();
+}])

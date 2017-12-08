@@ -16,14 +16,15 @@ var async = require("async");
 
 
 module.exports.controllerFunction = function(app){
-		
+	
+	//helper variables	
 	var ourInfo = {};
 
 	//---------- API TO GET ALL CART PRODUCTS ---------------
 
 	cartRouter.get('/all',auth.checkLogin,function(req,res){
 
-		//FIND USER BY ID AND GET ONLY CART FIELD AS RETURN
+		//FIND USER BY ID AND GET CART FIELD AS RETURN
 		userModel.find({"_id":req.session.user._id},
 			{cart:1,firstName:1},function(err,items){
 
@@ -33,6 +34,7 @@ module.exports.controllerFunction = function(app){
 			}
 
 			else if(items[0].cart.length === 0 || items[0].cart == null){
+
 				 ourInfo.inCart = false;
 				var myResponse = responseGenerator.generate(false,"No products added to cart",200,ourInfo);
                 res.send(myResponse);
@@ -52,9 +54,9 @@ module.exports.controllerFunction = function(app){
 
 	cartRouter.post('/add/:id',auth.checkLogin,function(req,res){
 
-		// HELPER VARIABLES TO DISTINGUISH DATA SENT FROM DIFFERENT VIEWS
-		var itemCount = req.body.itemCount;
-		var alertMessage = req.body.alertMessage;
+			// HELPER VARIABLES TO DISTINGUISH DATA SENT FROM DIFFERENT VIEWS
+			var itemCount = req.body.itemCount;
+			var alertMessage = req.body.alertMessage;
 
 		
 		userModel.find({"_id":req.session.user._id},function(err,user){
@@ -132,8 +134,6 @@ module.exports.controllerFunction = function(app){
 							// IDENTIFYING VALUE FROM FRONTEND --> CART-PAGE AND INCREASING IT
 							itemCount ++ ;
 
-							
-
 							for(var i=0;i<newOne.cart.length;i++){
 	            			
 		            			if(newOne.cart[i].productId.toString()==req.params.id){
@@ -175,7 +175,7 @@ module.exports.controllerFunction = function(app){
 			            	}
 			           		 
 			           		else{
-									console.log("waterfall"+result);
+									// console.log("waterfall"+result);
 									 req.session.user.addedToCart = true;
 									req.session.user.cart = result.cart;
 

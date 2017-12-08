@@ -1,20 +1,20 @@
+
 var mongoose = require('mongoose');
 var express = require('express');
-
-// express router // used to define routes 
+ 
 var userModel = mongoose.model('User');
 var productModel = mongoose.model('Product');
 var userRouter  = express.Router();
 var responseGenerator = require("./../../libs/responseGenerator");
 
 var crypto = require("./../../libs/crypto");
-var key = "Crypto-Key" ;
+var key = "Crypto-Key";
 var auth = require("./../../middlewares/authorization");
 
 
 module.exports.controllerFunction = function(app) {
 
-
+  //-----API TO LOGOUT USER -----
     userRouter.get('/logout',function(req,res){
       
       req.session.destroy(function(err){
@@ -42,18 +42,25 @@ module.exports.controllerFunction = function(app) {
             var myResponse = responseGenerator.generate(true,err,500,null);
                 res.send(myResponse);
             }
+
             else if(product && product!==null){
-                
-                
-                req.session.user.userProducts = product ;
+
+                req.session.user.dashProduct = product ;
+                delete req.session.user.password ;
+
                 var myResponse = responseGenerator.generate(
                   false,"Retrieved successfully",200,req.session.user);
+
                 res.send(myResponse);
             }
+
             else{
-              req.session.user.userProducts = product;
+              req.session.user.dashProduct = product;
+              delete req.session.user.password ;
+
               var myResponse = responseGenerator.generate(
                 false,"Retrieved successfully",200,req.session.user);
+
                 res.send(myResponse);
             }
         })
@@ -64,7 +71,7 @@ module.exports.controllerFunction = function(app) {
       
      // -------- API TO SIGNUP USER ---------
 
-    userRouter.post('/signup',function(req,res){
+    userRouter.post('/signup',auth.isLoggedIn,function(req,res){
 
         var signupInfo = {};
 
@@ -79,13 +86,13 @@ module.exports.controllerFunction = function(app) {
             }
             else if(user && user!==null){
                 
-                signupInfo.emailPresent = true;
-                 var myResponse = responseGenerator.generate(false,"Email already taken",200,signupInfo);
+                signupInfo.alreadyPresent = true;
+                 var myResponse = responseGenerator.generate(false,"Email already in use",200,signupInfo);
                  res.send(myResponse);
             }
 
             else{
-                 console.log("Email taken working");
+                 
                  var newUser = new userModel({
 
                     username    : req.body.firstname+' '+req.body.lastname,
@@ -104,11 +111,14 @@ module.exports.controllerFunction = function(app) {
                     }
 
                     else{
+
                     req.session.user = newUser;
+                    req.session.loginStatus = true;
+
                     delete req.session.user.password ;
                         
                     var myResponse = responseGenerator.generate(
-                      false,"Signed up successfully",200,newUser);
+                      false,"Signed up successfully",200,req.session.user);
                      res.send(myResponse);
 
                     }
@@ -130,30 +140,34 @@ module.exports.controllerFunction = function(app) {
 
     userRouter.post('/login',function(req,res){
        
-
         if(req.body.email != undefined && req.body.password != undefined){
 
              var mailId = req.body.email;
             var verifyPassword = crypto.encrypt(key,req.body.password);
 
 
-             userModel.findOne({"email":mailId,"password":verifyPassword},function(err,foundUser){
+             userModel.findOne({"email":mailId,"password":verifyPassword},{password:0}
+              ,function(err,foundUser){
                     if(err){
 
                         res.send(err);
                     }
                     else if(foundUser == null){ 
                             console.log("error working");
-                            var myResponse = responseGenerator.generate(true,"User data not available",500,null);
+                            var myResponse = responseGenerator.generate(
+                              true,"Enter valid credentials",500,null);
                             res.send(myResponse);                   
                     }
 
                     else{          
                          req.session.user = foundUser;
                          foundUser.loginStatus = true ;
+                         req.session.loginStatus = true;
+                         
                          delete req.session.user.password ;
 
-                          var myResponse = responseGenerator.generate(false,"Success",200,foundUser);
+                          var myResponse = responseGenerator.generate(
+                            false,"Success",200,foundUser);
                           res.send(myResponse);                       
                     }
             });
@@ -161,7 +175,10 @@ module.exports.controllerFunction = function(app) {
         }  
 
         else{
-            var myResponse = responseGenerator.generate(true,"Some paramater is missing",500,null);
+
+            var myResponse = responseGenerator.generate(
+              true,"Some paramater is missing",500,null);
+            
             res.send(myResponse);
         }
 

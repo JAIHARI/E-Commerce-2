@@ -8,14 +8,15 @@ myApp.controller("cartController",["$http",'$location','cartService','$rootScope
 	this.firstName;
 	this.cartTotal = 0;
 
-	this.showAsset = false;
-
 	this.cartItems=[];
 	this.showCartIcon = true;
 
 	$rootScope.showHome =true;
 	$rootScope.showCart =false; 
 	$rootScope.showLogout =true;
+
+	// FUNCTION TO GET ALL CART PRODUCTS
+	this.getAllCart = function(){
 
 		cartService.getCartApi()
 		.then(function successCallback(response){
@@ -28,7 +29,7 @@ myApp.controller("cartController",["$http",'$location','cartService','$rootScope
 				SweetAlert.swal({
 					
 				   title: ""+response.data.message+"",
-				   type: "success",
+				   type: "info",
 				   showCancelButton: false,
 				   confirmButtonColor: "#5cb85c",confirmButtonText: "Got it!",
 				   closeOnConfirm: true}, 
@@ -63,6 +64,7 @@ myApp.controller("cartController",["$http",'$location','cartService','$rootScope
 				}
 
 				else{
+
 					main.cartTotal = 0;
 				}
 			}
@@ -72,98 +74,100 @@ myApp.controller("cartController",["$http",'$location','cartService','$rootScope
 				console.log(reason);
 				alert("Error in Login-Post");
 			})
+	};
+
+	this.getAllCart();
 
 	
 		// FUNCTION TO DELETE ITEM FROM CART
 
-		this.deleteItem = function(id,index,value){
-		
-			//REDUCE PRODUCT-QUANTITY OR DELETE FROM CART BASED ON "VALUE"
-			var toCartDelete = {
-				toReduce : value
+	this.deleteItem = function(id,index,value){
+	
+		//REDUCE PRODUCT-QUANTITY OR DELETE FROM CART BASED ON "VALUE"
+		var toCartDelete = {
+			toReduce : value
+		}
+
+		cartService.deleteCartApi(id,toCartDelete)
+		.then(function successCallback(response){
+			console.log(response);
+
+			//ASSIGNING THE DATA FROM BACKEND TO A VARIABLE FOR CODE CLARITY
+			var mainData = response.data.data;
+
+			if(response.data.status ==200 && mainData.productDel == false){
+
+				console.log(main.cartItems[index]);
+				main.cartItems[index] = mainData.cart[index];
+				
+				main.cartTotal -= main.cartItems[index].price;
 			}
 
-			cartService.deleteCartApi(id,toCartDelete)
-			.then(function successCallback(response){
-				console.log(response);
 
-				//ASSIGNING THE DATA FROM BACKEND TO A VARIABLE FOR CODE CLARITY
-				var mainData = response.data.data;
+			else if(response.data.status ==200 && mainData.productDel == true){
+			
+					SweetAlert.swal({
+						
+					   title: "Done!",
+					   text:""+response.data.message+"",
+					   type: "success",
+					   showCancelButton: false,
+					   confirmButtonColor: "#de463b",confirmButtonText: "Ok!",
+					   closseOnConfirm: true}, 
+						function(){ 
+					   		
 
-				if(response.data.status ==200 && mainData.productDel == false){
+	   					main.cartTotal -= (main.cartItems[index].number * main.cartItems[index].price);
 
-					console.log(main.cartItems[index]);
-					main.cartItems[index] = mainData.cart[index];
-					
-					main.cartTotal -= main.cartItems[index].price;
-				}
+	   					//REMOVE ITEM FROM CART USING ARRAY'S SPLICE METHOD
+		   					main.cartItems.splice(index,1);
+		   					
+		   					if(main.cartItems.length>=1){
+								
+								main.showCartIcon = false;
+							}
+	   				
+	   						else{
 
+	   							main.cartTotal = 0;
+	   							main.showCartIcon = true;
+	   						}
+	   				});
+			}
 
-				else if(response.data.status ==200 && mainData.productDel == true){
 				
-						SweetAlert.swal({
-							
-						   title: "Done!",
-						   text:""+response.data.message+"",
-						   type: "success",
-						   showCancelButton: false,
-						   confirmButtonColor: "#de463b",confirmButtonText: "Ok!",
-						   closseOnConfirm: true}, 
-							function(){ 
-						   		
+		}, function errorCallback(reason){
+			console.log(reason);
+			alert("Error in Login-Post");
+		})
+	};
 
-		   					main.cartTotal -= (main.cartItems[index].number * main.cartItems[index].price);
 
-		   					//REMOVE ITEM FROM CART USING ARRAY'S SPLICE METHOD
-			   					main.cartItems.splice(index,1);
-			   					
-			   					if(main.cartItems.length>=1){
-									
-									main.showCartIcon = false;
-								}
-		   				
-		   						else{
+	// FUNCTION TO INCREASE ITEM IN CART
+	this.incQuantity = function(productId,index,count){
+		console.log(count);
 
-		   							main.cartTotal = 0;
-		   							main.showAsset = false;
-		   							main.showCartIcon = true;
-		   						}
-		   				});
-				}
-
-					
-			}, function errorCallback(reason){
-				console.log(reason);
-				alert("Error in Login-Post");
-			})
+		var toCart = {
+			alertMessage : false,
+			itemCount : count 	//ASSIGNING SOME VALUE TO INCREMENT QUANTITY
 		};
+		
+		cartService.postCartApi(productId,toCart)
+		.then(function successCallback(response){
+			 
+			if(response.data.status==200 && response.data.data ==false){
+				alert(response.data.message);
+			}
+			else if(response.data.status ==200){
+				main.cartItems[index] = response.data.data.cart[index];
 
-	
-		// FUNCTION TO INCREASE ITEM IN CART
-		this.incQuantity = function(productId,index,count){
-			console.log(count);
+				main.cartTotal += main.cartItems[index].price;
 
-			var toCart = {
-				alertMessage : false,
-				itemCount : count 	//ASSIGNING SOME VALUE TO INCREMENT QUANTITY
-			};
-			
-			cartService.postCartApi(productId,toCart)
-			.then(function successCallback(response){
-				 
-				if(response.data.status==200 && response.data.data ==false){
-					alert(response.data.message);
-				}
-				else if(response.data.status ==200){
-					main.cartItems[index] = response.data.data.cart[index];
-
-					main.cartTotal += main.cartItems[index].price;
-
-				}
-			
-			}, function errorCallback(reason){
-				console.log(reason);
-				alert("Error in Post");
-			})
-		};
+			}
+		
+		}, function errorCallback(reason){
+			console.log(reason);
+			alert("Error in Post");
+		})
+	};
 }])

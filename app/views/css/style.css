@@ -2,19 +2,55 @@
 
 	body{
 
-		padding-top:90px;
+		padding-top:95px;
+		margin : 0rem 0.5rem;
+	}
+
+	/*FLEXBOX-STYLE NAVIGATION*/
+	.navi-flex{
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+	}
+	.navbar-brand{
+		margin-left: 1rem;
 	}
 
 	/*NAVLINKS*/
-	ul .nav-item{
-		padding: 0.75rem;
+	.navi-flex .list-inline-item{
+		padding: 0rem 1rem;
 	}
 
+	.anchor-style{
+		color: ghostwhite;
+	}
+	
+
 	a:hover{
+		color: lightgrey;
 		text-decoration: none;
 	}
 
-	/*SIGNUP-PAGE ELEMENT(or)DIV */
+	@media screen and (max-width: 480px){
+		
+		body{
+			margin: 0rem;
+			padding-top: 120px;
+		}
+
+		.navi-flex{
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.navi-flex .list-inline-item{
+			padding: 0rem 0.75rem;
+		}
+		
+	}
+
+	/*SIGNUP-PAGE */
 	.signup-home{
 
 		background-image: url("images/shop-home.jpg");
@@ -24,8 +60,9 @@
 	}
 
     /*DASHBOARD RECENTLY ADDED CARD*/
+
 	.dash-card{
-		/*background: linear-gradient(to right,#ece8e8,#e4e4e2);*/
+		/*background: linear-gradient(to top,#f5bdb9,#9e332c);*/
 		background: linear-gradient(to top,#f1ede1,#e9aba7);
 	}
 
@@ -39,10 +76,18 @@
 	}
 
 	@media screen and (max-width:480px){
-		.dash-button{
-			
+
+		.dash-button{			
 			flex-direction: column;
-			
+			margin: 2rem 2rem;	
+		}
+
+		.product-td{
+			width:30%;
+		}
+
+		.product-quantity{
+			width : 50%;
 		}
 	}
 
@@ -55,7 +100,9 @@
 	.all-products{
 		margin-top: 2rem;
         padding: 2rem;
-	    background: linear-gradient(to right,#e6baba,#b7ec79);
+       /* background: linear-gradient(to top,#f5bdb9,#9e332c);*/
+        background: linear-gradient(to top,#f5bdb9,#b9d995);
+	    /*background: linear-gradient(to right,#e6baba,#b7ec79);*/
 	}
 
 	.all-products ul .list-group-item{
@@ -65,7 +112,7 @@
 	/*CART PAGE TITLE ELEMENT*/
 	.cart-title{
 		
-         font-family: 'Berkshire Swash', cursive;
+        font-family: 'Berkshire Swash', cursive;
 		padding: 2rem;
 		background-color: gainsboro;
 	}
@@ -87,29 +134,13 @@
 		margin: 0.5rem auto;
 	}
 
+	/*DIV-FLEX INSIDE TD */
 	.product-flex{
 		display: flex;
    	 	flex-direction: column;
     	align-items: center;
 	}
 
-	/*.cart-card{
-		border: 1px solid #b0aaa8;
-    	background-color: #b0aaa8;
-	}
-
-	.cart-quantity{
-
-		display: flex; 
-		flex-direction :column;
-		align-items: center;;
-	}*/
-
-	.alert-style{
-		margin-top: 10rem;
-		text-align: center;
-		background-color: #59b3aa;
-	}
 
 	@media screen and (max-width:767px){
 		.alert-style{
@@ -117,8 +148,39 @@
 		}
 	}
 
+	/*CART-PAGE-HEADING DIVS*/
+	.cart-page-title{
+		
+    	border-radius: 3px;
+	}
+	
+	.product-td{
+		width: 40%;
+		
+	}
+
+	.product-quantity{
+		width:40%;
+	}
+
+	@media screen and (max-width:480px){
+
+		.table tbody{
+			font-size: 1rem;
+		}
+		.product-td{
+				width:30%;
+		}
+
+		.product-quantity{
+			width : 50%;
+		}
+	}
+
 	.footer-style{
-		/*position: fixed;*/
+		display: flex;
+		justify-content: space-evenly;
+		align-items: center;
 		padding: 5px;
 		background-color: #222222;
 		color: ghostwhite; 
