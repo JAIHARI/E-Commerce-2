@@ -31,7 +31,7 @@ app.use(express.static(__dirname +'/app/views'));
 
 //Establishing database connection
 
-var dbPath = "mongodb://localhost/shopCart";
+var dbPath = "mongodb://rahul09:rahul@ds133296.mlab.com:33296/shopcart";
 
 db = mongoose.connect(dbPath);
 
@@ -89,8 +89,9 @@ app.use(function(err,req,res,next){
 });  
 
 
+const port = process.env.PORT || 3000 ;
 
 
-app.listen(3000, function () {
+app.listen(port, function () {
   console.log('Example app listening on port 3000!');
 });
