@@ -281,7 +281,7 @@ module.exports.controllerFunction = function(app){
 							ourInfo.productDel = true;
 							
 							var myResponse = responseGenerator.generate(
-								false,"Product deleted successfully",200,ourInfo);
+								false,"Product removed from cart!",200,ourInfo);
 							res.send(myResponse);
 					}
 				})

@@ -80,7 +80,7 @@ myApp.controller("EditDeleteController",
 				   title: ""+response.data.message+"",
 				   type: "success",
 				   showCancelButton: false,
-				   confirmButtonColor: "##5cb85c",confirmButtonText: "Got it!",
+				   confirmButtonColor: "#5cb85c",confirmButtonText: "Got it!",
 				   closeOnConfirm: true}, 
 					function(){ 
 				   		$location.path('/product/all');

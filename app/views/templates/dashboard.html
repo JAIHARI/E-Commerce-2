@@ -1,6 +1,6 @@
 
 			<!-- DASHBOARD SETUP -->
-		  	<div class="row">
+		  	<div class="row" style="margin-top:0.5rem;">
 		  		<div class="col-12 text-center">
 			  		<h4>Hi, {{ dashCtrl.userName }}</h4>
 				   	<div class="dash-button">
@@ -19,8 +19,11 @@
 		  	<hr>
 
 		  	<!-- RECENTLY ADDED PRODUCT -->
-		  	<div class="row" ng-if="dashCtrl.productAvail">
-		  		<div class="col-12 col-sm-6 col-md-5 offset-md-1">
+		  	<div class="row">
+			  	<!-- <div class="col-12" ng-if="!dashCtrl.productAvail">
+			  		<h4 class="text-muted">* No products to show</h4>
+			  	</div> -->
+		  		<div class="col-12 col-sm-6 col-md-5 offset-md-1" ng-if="dashCtrl.productAvail">
 					<div class="card dash-card">
 					  <div class="card-header">
 					    <h6>Recently Added Product</h6>

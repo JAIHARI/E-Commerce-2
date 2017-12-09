@@ -8,7 +8,11 @@ myApp.controller("ForgotController",["$http",'$location','cartService','$rootSco
 	this.email ;
 	this.emailForReset;
 	this.newPassword;
-	
+
+	// LOADER WHILE WAITING FOR RESPONSE
+	this.showAlert = false;
+
+
 	 // RESET PASSWORD FUNCTION
 	 
 	this.resetPass = function(email){
@@ -21,9 +25,10 @@ myApp.controller("ForgotController",["$http",'$location','cartService','$rootSco
 		cartService.postResetApi(emailToSent)
 		.then(function successCallback(response){
 			console.log(response);
-
+			
+			main.showAlert = false;
 			if(response.data.status ==200 && response.data.data ==true){
-				console.log("finsd");
+				
 				SweetAlert.swal({
 					title:"Email-Sent",
 				  	text: ""+response.data.message+"",
@@ -63,8 +68,10 @@ myApp.controller("ForgotController",["$http",'$location','cartService','$rootSco
 		cartService.updatePasswordApi(infoToUpdate)
 		.then(function successCallback(response){
 			console.log(response);
-
+			main.showAlert = true;
+			
 			if(response.data.mailLog ==false){
+				main.showAlert = false;
 				SweetAlert.swal({
 					title:"Access denied",
 				  	text: ""+response.data.message+"",
@@ -79,7 +86,7 @@ myApp.controller("ForgotController",["$http",'$location','cartService','$rootSco
 			else{
 				
 				if(response.data.status ==200){
-
+					main.showAlert = false;
 					SweetAlert.swal({
 						title:"Heeee-haaaa!!",
 					  	text: ""+response.data.message+"",

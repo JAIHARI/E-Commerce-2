@@ -29,7 +29,7 @@ myApp.controller("SignupController",["$http",'$location','cartService','SweetAle
 			if(response.data.loggedIn == true || response.data.loggedIn != undefined){
 
 				SweetAlert.swal({
-				   title: "Bye",
+				   title: "Access denied",
 				   text:""+response.data.message+"",
 				   type: "info",
 				   confirmButtonColor: "#de463b",confirmButtonText: "Ok",

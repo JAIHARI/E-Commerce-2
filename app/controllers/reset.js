@@ -20,15 +20,12 @@ var smtp = nodemailer.createTransport({
 		
 		service : "gmail",
 		host: "smtp.gmail.com",
-		port: 465,
+		port: 587,
 		tls:{rejectUnauthorized:false},
-		secure:false,
+		secure:true,
 		
-		auth:{
-			user:'rahul.mit.201209@gmail.com',
-			pass:'newAccount'
-		},
-		
+		auth:{ user:"wasupgans123@gmail.com", 
+				pass: "football07"},
 		
 		debug:true
 
