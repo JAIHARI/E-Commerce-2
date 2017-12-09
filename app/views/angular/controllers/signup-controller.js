@@ -52,7 +52,7 @@ myApp.controller("SignupController",["$http",'$location','cartService','SweetAle
 				else{
 					SweetAlert.swal({
 						title:"OOPS!",
-					  	text: "",
+					  	text: ""+response.data.message+"",
 					   	type: "info",
 					   	showCancelButton: false,
 					   	confirmButtonColor: "#de463b",confirmButtonText: "OK!",
