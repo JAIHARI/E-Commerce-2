@@ -12,7 +12,7 @@ var productSchema = new Schema({
 	productName  		: {type:String,default:'',required:true},
 	category			: {type:String,default:'',required:true},
 	price				: {type:Number,default:0,required:true},
-	color				: {type:String,default:'White',required:true},
+	color				: {type:String,default:'',required:true},
 	additionalInfo		: {type:String,default:'',required:true},
 	availableIn	  		: {type:Number,default:1,required:true}
 
@@ -20,5 +20,5 @@ var productSchema = new Schema({
 
 
 
-// create the model for users and expose it to our app
+// create the model for products and expose it to our app
 module.exports = mongoose.model('Product', productSchema);

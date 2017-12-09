@@ -34,6 +34,13 @@ myApp.controller("LoginController",["$http",'$location','cartService','$rootScop
 
 			else{
 
+				SweetAlert.swal({
+					title:"OOPS!",
+				  	text: ""+response.data.message+"",
+				   	type: "error",
+				   	showCancelButton: false,
+				   	confirmButtonColor: "#de463b",confirmButtonText: "Got it!",
+				   	closeOnConfirm: true});
 				
 			}
 
