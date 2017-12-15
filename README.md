@@ -1,5 +1,5 @@
 
-# E-commerce site based on MEAN STACK
+# E-Commerce application using MEAN STACK :simple_smile:
 FOLLOWING ARE THE API END POINTS AVAILABLE IN THIS APPLICATION
 
 ```
