@@ -1,5 +1,5 @@
 
-# E-Commerce application using MEAN STACK :simple_smile:
+# E-Commerce application using MEAN STACK:grinning:
 FOLLOWING ARE THE API END POINTS AVAILABLE IN THIS APPLICATION
 
 ```
