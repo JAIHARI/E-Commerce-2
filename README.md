@@ -4,8 +4,10 @@ FOLLOWING ARE THE API END POINTS AVAILABLE IN THIS APPLICATION
 
 ```
  user/login  : LOGIN PAGE
+ 
  ```
  user/signup  : SIGNUP PAGE
+ 
  ```
  user/dashboard  : Dashboard PAGE
  
