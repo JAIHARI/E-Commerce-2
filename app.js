@@ -31,8 +31,12 @@ app.use(express.static(__dirname +'/app/views'));
 
 //Establishing database connection
 
-var dbPath = "mongodb://rahul09:rahul@ds133296.mlab.com:33296/shopcart";
+// USING MLAB'S DATABASE ACCOUNT -For HEROKU Purpose
+// var dbPath = "mongodb://rahul09:rahul@ds133296.mlab.com:33296/shopcart";
 
+// For assignment - purpose
+
+var dbPath = "mongodb://localhost/shopCart";
 db = mongoose.connect(dbPath);
 
 mongoose.connection.once('open',function(){
@@ -88,8 +92,8 @@ app.use(function(err,req,res,next){
 	}
 });  
 
-
-const port = process.env.PORT || 3000 ;
+// PORT DECLARATION
+var port = process.env.PORT || 3000 ;
 
 
 app.listen(port, function () {
